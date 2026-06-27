@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Eight end-to-end high level system designs with full architecture diagrams, decisions and deep dives." />
-  <title>HLD Designs — End-to-End System Architectures</title>
+  <meta name="description" content="80 high-frequency FAANG/Uber/Stripe coding problems with solutions, explanations and traces in Python." />
+  <title>80 Coding Problems — Solutions, Explanations & Traces</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -18,21 +18,16 @@
     <button id="menu-toggle" class="icon-btn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
     <a class="brand" href="index.html">
       <span class="brand-mark">◈</span>
-      <span class="brand-text"><strong>HLD</strong><em>Designs</em></span>
+      <span class="brand-text"><strong>HLD</strong><em>Problems</em></span>
     </a>
     <nav class="page-nav" aria-label="Pages">
       <a href="index.html">Concepts</a>
       <a href="toolbox.html">Toolbox</a>
-      <a href="designs.html" class="active">Designs</a>
+      <a href="designs.html">Designs</a>
       <a href="python.html">Python</a>
-      <a href="problems.html">Problems</a>
+      <a href="problems.html" class="active">Problems</a>
       <a href="practice.html">Practice</a>
     </nav>
-    <div class="topbar-search">
-      <svg viewBox="0 0 24 24" class="search-ico" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 19a8 8 0 100-16 8 8 0 000 16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <input id="search" type="search" placeholder="Search designs, e.g. chat, feed, uber…" autocomplete="off" />
-      <kbd>/</kbd>
-    </div>
     <div class="topbar-controls">
       <div class="select-wrap" title="Color theme">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 000 18c1.7 0 2-1.3 1.2-2.2-.8-1-.2-2.3 1-2.3H17a4 4 0 004-4c0-5-4-9.5-9-9.5z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor"/><circle cx="12" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="11" r="1.2" fill="currentColor"/></svg>
@@ -44,7 +39,13 @@
 
   <div class="layout">
     <aside id="sidebar" class="sidebar">
-      <nav id="nav" class="nav" aria-label="Designs"></nav>
+      <nav id="nav" class="nav" aria-label="Problem categories"></nav>
+      <div class="sidebar-foot">
+        <div class="progress-ring">
+          <div class="pr-top"><span id="read-count">0</span><small>/ <span id="total-count">0</span> solved</small></div>
+          <div class="pr-bar"><i id="pr-fill"></i></div>
+        </div>
+      </div>
     </aside>
     <div id="backdrop" class="backdrop"></div>
 
@@ -52,14 +53,10 @@
       <section class="hero">
         <div class="hero-glow"></div>
         <div class="hero-inner">
-          <span class="eyebrow">END-TO-END · FULL DIAGRAMS · INTERVIEW-READY</span>
-          <h1>Eight Systems, Designed Top to Bottom</h1>
-          <p>The classic interview designs — URL shortener, news feed, chat, video, ride-hailing, e-commerce, rate limiter and notifications. Each with requirements, capacity math, a full architecture diagram, key decisions, a request flow, and deep dives.</p>
-          <p class="dedication">✨ Designed end-to-end for <strong>JS&nbsp;Mam</strong> ✨</p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#d-url">Start with #1 →</a>
-            <a class="btn ghost" href="toolbox.html">Browse the toolbox</a>
-          </div>
+          <span class="eyebrow">FAANG · UBER · STRIPE · SALESFORCE · TOP 80</span>
+          <h1>80 Must-Know Coding Problems</h1>
+          <p>Each problem with a clear statement, the approach, a clean Python solution, time/space complexity, a plain-English explanation, and a step-by-step trace. Filter by topic or difficulty and search instantly.</p>
+          <p class="dedication">✨ Curated for <strong>JS&nbsp;Mam</strong> ✨</p>
           <div class="hero-stats" id="hero-stats"></div>
         </div>
       </section>
@@ -67,7 +64,6 @@
       <div id="sections"></div>
 
       <footer class="site-foot">
-        <p>Walk each design as: requirements → estimates → high-level architecture → deep dives → tradeoffs.</p>
         <p class="credit">Crafted with care for <strong>JS&nbsp;Mam</strong> 💛</p>
         <p class="muted">HLD Masterclass · <span id="year"></span></p>
       </footer>
@@ -76,13 +72,14 @@
 
   <button id="to-top" class="to-top" aria-label="Back to top">↑</button>
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/shell.js"></script>
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/toolbox-data.js"></script>
-  <script src="assets/js/designs-data.js"></script>
-  <script src="assets/js/designs.js"></script>
+  <script src="assets/js/problems-data.js"></script>
+  <script src="assets/js/problems.js"></script>
   <script src="assets/js/enhance.js"></script>
 </body>
 </html>

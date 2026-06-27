@@ -89,6 +89,19 @@
     if (svg) Zoom.open(svg);
   });
 
+  // Delegate: copy a code block
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".copy-code");
+    if (!btn) return;
+    const code = btn.closest(".code-wrap")?.querySelector("code");
+    if (!code) return;
+    navigator.clipboard && navigator.clipboard.writeText(code.textContent);
+    const old = btn.textContent;
+    btn.textContent = "copied!";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = old; btn.classList.remove("copied"); }, 1200);
+  });
+
   /* ---------------- Copy-link anchors ---------------- */
   function decorateAnchors(root) {
     $$(".section[id], .card[id], .design[id]", root).forEach((el) => {
@@ -137,6 +150,10 @@
         );
       if (window.DESIGNS)
         window.DESIGNS.forEach((d) => out.push({ title: d.title, sub: "Design · end-to-end", page: "designs.html", hash: d.id }));
+      if (window.PYTHON)
+        window.PYTHON.forEach((s) => out.push({ title: s.title, sub: "Python · primer", page: "python.html", hash: s.id }));
+      if (window.PROBLEMS)
+        window.PROBLEMS.forEach((p) => out.push({ title: p.num + ". " + p.title, sub: "Problem · " + p.difficulty + " · " + p.category, page: "problems.html", hash: p.id }));
       return out;
     }
     function build() {
