@@ -1,0 +1,137 @@
+/* =====================================================================
+   THEME SYSTEM — centralized palette tokens.
+   Swap palettes via   <html data-theme="...">   and light/dark via
+   <html data-mode="light|dark">. Add a new palette by copying one
+   block and changing the --accent / --accent-2 / surface hues.
+   ===================================================================== */
+
+:root {
+  /* Spacing / radius / typography scales (palette-independent) */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --font-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-display: "Sora", var(--font-sans);
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.18), 0 1px 1px rgba(0,0,0,.10);
+  --shadow-md: 0 8px 24px rgba(0,0,0,.22);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,.35);
+  --ring: 0 0 0 3px var(--accent-soft);
+  --speed: .22s;
+}
+
+/* ---------- DARK base (default mode) ---------- */
+:root,
+:root[data-mode="dark"] {
+  --bg: #0a0c13;
+  --bg-2: #0f121c;
+  --surface: #141826;
+  --surface-2: #1b2031;
+  --surface-3: #232a40;
+  --border: #2a3147;
+  --border-soft: #222a3d;
+  --text: #eef1fb;
+  --text-soft: #b6bdd4;
+  --text-dim: #828aa6;
+  --code-bg: #0b0e17;
+  --diagram-bg: #0c0f19;
+  --shadow-lg: 0 24px 60px rgba(0,0,0,.55);
+}
+
+/* ---------- LIGHT mode overrides ---------- */
+:root[data-mode="light"] {
+  --bg: #f4f6fd;
+  --bg-2: #eef1fb;
+  --surface: #ffffff;
+  --surface-2: #f6f8ff;
+  --surface-3: #eef1fb;
+  --border: #dce1f2;
+  --border-soft: #e7eaf7;
+  --text: #131730;
+  --text-soft: #41496b;
+  --text-dim: #6b73a0;
+  --code-bg: #f1f4fd;
+  --diagram-bg: #ffffff;
+  --shadow-md: 0 10px 30px rgba(40,50,90,.12);
+  --shadow-lg: 0 24px 60px rgba(40,50,90,.18);
+}
+
+/* =====================================================================
+   PALETTES — each defines accent ramp + category hues.
+   ===================================================================== */
+
+/* AURORA (indigo → cyan → magenta) */
+:root[data-theme="aurora"] {
+  --accent: #7c7bff;
+  --accent-2: #38e8ff;
+  --accent-3: #ff6ad5;
+  --accent-soft: rgba(124,123,255,.22);
+  --accent-grad: linear-gradient(120deg, #7c7bff, #38e8ff 55%, #ff6ad5);
+}
+
+/* SUNSET (amber → coral → violet) */
+:root[data-theme="sunset"] {
+  --accent: #ff8a4c;
+  --accent-2: #ff4d7e;
+  --accent-3: #a45cff;
+  --accent-soft: rgba(255,138,76,.22);
+  --accent-grad: linear-gradient(120deg, #ffb24c, #ff4d7e 55%, #a45cff);
+}
+
+/* FOREST (emerald → teal → lime) */
+:root[data-theme="forest"] {
+  --accent: #2fd6a3;
+  --accent-2: #19b6c9;
+  --accent-3: #9be15d;
+  --accent-soft: rgba(47,214,163,.22);
+  --accent-grad: linear-gradient(120deg, #9be15d, #2fd6a3 55%, #19b6c9);
+}
+
+/* OCEAN (azure → blue → indigo) */
+:root[data-theme="ocean"] {
+  --accent: #3aa0ff;
+  --accent-2: #4f5bff;
+  --accent-3: #36e0e0;
+  --accent-soft: rgba(58,160,255,.22);
+  --accent-grad: linear-gradient(120deg, #36e0e0, #3aa0ff 55%, #4f5bff);
+}
+
+/* ROSE (pink → rose → plum) */
+:root[data-theme="rose"] {
+  --accent: #ff5d9e;
+  --accent-2: #ff7eb3;
+  --accent-3: #b06cff;
+  --accent-soft: rgba(255,93,158,.22);
+  --accent-grad: linear-gradient(120deg, #ff9d6c, #ff5d9e 55%, #b06cff);
+}
+
+/* MONO (graphite — calm, print-friendly) */
+:root[data-theme="mono"] {
+  --accent: #8b93b8;
+  --accent-2: #c3c9e6;
+  --accent-3: #6d75a0;
+  --accent-soft: rgba(139,147,184,.22);
+  --accent-grad: linear-gradient(120deg, #c3c9e6, #8b93b8 60%, #6d75a0);
+}
+
+/* Category accent hues — used to color-code the 19 sections.
+   These are intentionally vivid and shared across palettes. */
+:root {
+  --c-network:  #38bdf8;
+  --c-api:      #818cf8;
+  --c-compute:  #f472b6;
+  --c-cache:    #fb923c;
+  --c-storage:  #34d399;
+  --c-data:     #22d3ee;
+  --c-messaging:#a78bfa;
+  --c-security: #f87171;
+  --c-reliab:   #facc15;
+  --c-consist:  #2dd4bf;
+  --c-scaling:  #60a5fa;
+  --c-observe:  #c084fc;
+  --c-patterns: #fb7185;
+  --c-interview:#4ade80;
+}

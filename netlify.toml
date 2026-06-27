@@ -1,0 +1,18 @@
+[build]
+  # Pure static site — no build step. Publish this folder as-is.
+  publish = "."
+  command = ""
+
+# Sensible security headers for a static teaching site.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+
+# Long-cache static assets (they are versioned by edits, safe to cache).
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

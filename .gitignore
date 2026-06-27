@@ -1,0 +1,9 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+
+# Local server / tooling
+__pycache__/
+node_modules/
+.vscode/

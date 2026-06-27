@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aurora">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Practice HLD with flashcards and a quiz generated from the course." />
+  <title>HLD Practice — Flashcards & Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">◈</span>
+      <span class="brand-text"><strong>HLD</strong><em>Practice</em></span>
+    </a>
+    <nav class="page-nav" aria-label="Pages">
+      <a href="index.html">Concepts</a>
+      <a href="toolbox.html">Toolbox</a>
+      <a href="designs.html">Designs</a>
+      <a href="practice.html" class="active">Practice</a>
+    </nav>
+    <div class="topbar-controls">
+      <div class="select-wrap" title="Color theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 000 18c1.7 0 2-1.3 1.2-2.2-.8-1-.2-2.3 1-2.3H17a4 4 0 004-4c0-5-4-9.5-9-9.5z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor"/><circle cx="12" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="11" r="1.2" fill="currentColor"/></svg>
+        <select id="theme-select" aria-label="Color theme"></select>
+      </div>
+      <button id="mode-toggle" class="icon-btn pill" aria-label="Toggle light/dark"><span class="mode-ico">🌙</span></button>
+    </div>
+  </header>
+
+  <main id="top" class="content practice-content">
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-inner">
+        <span class="eyebrow">REVISE · TEST · RETAIN</span>
+        <h1>Practice Mode</h1>
+        <p>Flip through flashcards and take a quick quiz — both generated from everything in the course. Great for a fast revision before class or an interview.</p>
+        <p class="dedication">✨ Made for <strong>JS&nbsp;Mam</strong> ✨</p>
+      </div>
+    </section>
+
+    <div class="ptabs">
+      <button class="ptab active" data-tab="tab-cards">🎴 Flashcards</button>
+      <button class="ptab" data-tab="tab-quiz">❓ Quiz</button>
+    </div>
+
+    <div id="tab-cards" class="ptab-panel active">
+      <div class="fc-wrap">
+        <div class="fc-meta"><span id="fc-tag" class="chip"></span><span id="fc-pos" class="fc-pos"></span></div>
+        <div id="flashcard" class="flashcard" title="Click to flip (Space)">
+          <div class="fc-inner">
+            <div class="fc-face fc-front"><span class="fc-hint">click to flip</span><h3 id="fc-front"></h3></div>
+            <div class="fc-face fc-back"><span class="fc-hint">definition</span><p id="fc-back"></p></div>
+          </div>
+        </div>
+        <div class="fc-controls">
+          <button id="fc-prev" class="btn ghost">← Prev</button>
+          <button id="fc-shuffle" class="btn ghost">⤮ Shuffle</button>
+          <button id="fc-next" class="btn primary">Next →</button>
+        </div>
+        <p class="fc-tip">Tip: use ← → arrow keys to move, Space to flip.</p>
+      </div>
+    </div>
+
+    <div id="tab-quiz" class="ptab-panel">
+      <div id="quiz-card" class="quiz-card"></div>
+    </div>
+
+    <footer class="site-foot">
+      <p class="credit">Crafted with care for <strong>JS&nbsp;Mam</strong> 💛</p>
+      <p class="muted">HLD Masterclass · <span id="year"></span></p>
+    </footer>
+  </main>
+
+  <button id="to-top" class="to-top" aria-label="Back to top">↑</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/shell.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/toolbox-data.js"></script>
+  <script src="assets/js/designs-data.js"></script>
+  <script src="assets/js/practice.js"></script>
+  <script src="assets/js/enhance.js"></script>
+</body>
+</html>
