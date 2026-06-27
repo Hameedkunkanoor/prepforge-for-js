@@ -11,6 +11,61 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const PAGE = location.pathname.split("/").pop() || "index.html";
 
+  /* ---------------- Brand + grouped HLD/Coding menu ---------------- */
+  const APP_NAME = "PrepForge";            // change here to rename the whole app
+  const APP_TAG = "for JS";                // small subtitle next to the name
+  const MENUS = [
+    { label: "HLD", items: [["Concepts", "index.html"], ["Toolbox", "toolbox.html"], ["Designs", "designs.html"]] },
+    { label: "Coding", items: [["Python", "python.html"], ["Problems", "problems.html"]] },
+    { label: "Practice", href: "practice.html" },
+  ];
+  const SECTION = {
+    "index.html": "Concepts", "": "Concepts", "toolbox.html": "Toolbox", "designs.html": "Designs",
+    "python.html": "Python", "problems.html": "Problems", "practice.html": "Practice",
+  };
+  function buildTopNav() {
+    const brandText = document.querySelector(".brand .brand-text");
+    if (brandText) brandText.innerHTML = `<strong>${APP_NAME}</strong><em>${APP_TAG}</em>`;
+    document.title = `${APP_NAME} ${APP_TAG} · ${SECTION[PAGE] || ""}`;
+
+    const nav = document.querySelector(".page-nav");
+    if (nav) {
+      nav.innerHTML = MENUS.map((m) => {
+        if (m.href) {
+          const active = m.href === PAGE ? " active" : "";
+          return `<a class="pn-link${active}" href="${m.href}">${m.label}</a>`;
+        }
+        const inMenu = m.items.some(([, href]) => href === PAGE || (href === "index.html" && PAGE === ""));
+        const items = m.items
+          .map(([label, href]) => {
+            const cur = href === PAGE || (href === "index.html" && PAGE === "") ? " current" : "";
+            return `<a href="${href}" class="pn-item${cur}">${label}</a>`;
+          })
+          .join("");
+        return `<div class="navmenu${inMenu ? " active" : ""}">
+          <button class="menu-btn" type="button">${m.label}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+          <div class="menu-panel">${items}</div>
+        </div>`;
+      }).join("");
+
+      nav.querySelectorAll(".menu-btn").forEach((btn) =>
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const mn = btn.parentElement;
+          const open = mn.classList.contains("open");
+          nav.querySelectorAll(".navmenu").forEach((x) => x.classList.remove("open"));
+          if (!open) mn.classList.add("open");
+        })
+      );
+      document.addEventListener("click", () => nav.querySelectorAll(".navmenu").forEach((x) => x.classList.remove("open")));
+    }
+
+    // footer brand text
+    document.querySelectorAll(".site-foot .muted").forEach((el) => {
+      el.innerHTML = el.innerHTML.replace(/HLD Masterclass/g, `${APP_NAME} ${APP_TAG}`);
+    });
+  }
+
   /* ---------------- Inject toolbar buttons ---------------- */
   function ic(svg) { return svg; }
   function injectButtons() {
@@ -258,6 +313,7 @@
 
   /* ---------------- Init ---------------- */
   function init() {
+    buildTopNav();
     injectButtons();
     watchContent();
     // open deep link target after content renders
