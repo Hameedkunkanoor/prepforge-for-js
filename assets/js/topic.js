@@ -7,7 +7,13 @@
   const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
   const id = new URLSearchParams(location.search).get("id");
-  const list = window.DEEPDIVES || [];
+  const CAT_ORDER = ["Fundamentals", "Networking & Delivery", "Data & Storage", "Scaling", "Distributed Systems", "Reliability", "Patterns", "Security"];
+  const LVL = (t) => (/beginner/i.test(t.level || "") ? 0 : /intermediate/i.test(t.level || "") ? 1 : 2);
+  const raw = window.DEEPDIVES || [];
+  const list = raw.slice().sort((a, b) => {
+    const ca = CAT_ORDER.indexOf(a.cat), cb = CAT_ORDER.indexOf(b.cat);
+    return ca - cb || LVL(a) - LVL(b);
+  });
   const i = list.findIndex((t) => t.id === id);
   const topic = list[i] || list[0];
   const prev = list[i - 1], next = list[i + 1];
