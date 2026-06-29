@@ -21,7 +21,7 @@
   ];
   const SECTION = {
     "index.html": "Concepts", "": "Concepts", "toolbox.html": "Toolbox", "designs.html": "Designs",
-    "python.html": "Python", "problems.html": "Problems", "practice.html": "Practice", "deepdives.html": "Deep Dives",
+    "python.html": "Python", "problems.html": "Problems", "practice.html": "Practice", "deepdives.html": "Deep Dives", "topic.html": "Deep Dive",
   };
   function buildTopNav() {
     const brandText = document.querySelector(".brand .brand-text");

@@ -47,6 +47,7 @@ window.Shell = (function () {
     };
   }
   function initMermaid() {
+    if (typeof mermaid === "undefined") return;
     mermaid.initialize({
       startOnLoad: false,
       securityLevel: "loose",
@@ -58,6 +59,7 @@ window.Shell = (function () {
   }
   let seq = 0;
   async function renderDiagrams(scope = document) {
+    if (typeof mermaid === "undefined") return;
     for (const el of $$(".mermaid[data-src]", scope)) {
       try {
         const { svg } = await mermaid.render("mmd-" + seq++, el.getAttribute("data-src"));
