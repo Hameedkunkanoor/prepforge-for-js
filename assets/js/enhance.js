@@ -15,13 +15,13 @@
   const APP_NAME = "PrepForge";            // change here to rename the whole app
   const APP_TAG = "for JS";                // small subtitle next to the name
   const MENUS = [
-    { label: "HLD", items: [["Concepts", "index.html"], ["Toolbox", "toolbox.html"], ["Designs", "designs.html"]] },
+    { label: "HLD", items: [["Concepts", "index.html"], ["Deep Dives", "deepdives.html"], ["Toolbox", "toolbox.html"], ["Designs", "designs.html"]] },
     { label: "Coding", items: [["Python", "python.html"], ["Problems", "problems.html"]] },
     { label: "Practice", href: "practice.html" },
   ];
   const SECTION = {
     "index.html": "Concepts", "": "Concepts", "toolbox.html": "Toolbox", "designs.html": "Designs",
-    "python.html": "Python", "problems.html": "Problems", "practice.html": "Practice",
+    "python.html": "Python", "problems.html": "Problems", "practice.html": "Practice", "deepdives.html": "Deep Dives",
   };
   function buildTopNav() {
     const brandText = document.querySelector(".brand .brand-text");
@@ -209,6 +209,8 @@
         window.PYTHON.forEach((s) => out.push({ title: s.title, sub: "Python · primer", page: "python.html", hash: s.id }));
       if (window.PROBLEMS)
         window.PROBLEMS.forEach((p) => out.push({ title: p.num + ". " + p.title, sub: "Problem · " + p.difficulty + " · " + p.category, page: "problems.html", hash: p.id }));
+      if (window.DEEPDIVES)
+        window.DEEPDIVES.forEach((t) => out.push({ title: t.title, sub: "Deep dive · internals", page: "deepdives.html", hash: t.id }));
       return out;
     }
     function build() {

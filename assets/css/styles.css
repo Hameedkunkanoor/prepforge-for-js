@@ -582,6 +582,19 @@ a { color: inherit; text-decoration: none; }
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
 .reveal.in { opacity: 1; transform: none; }
 
+/* ============ Deep Dives ============ */
+.dd-topic { padding: 44px 0 20px; border-bottom: 1px solid var(--border-soft); }
+.dd-head { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 22px; }
+.dd-icon { font-size: 28px; display: grid; place-items: center; width: 58px; height: 58px; flex: none; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow-sm); }
+.dd-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 2px; color: var(--accent-2); margin-bottom: 4px; }
+.dd-head h2 { font-family: var(--font-display); font-size: clamp(22px,3vw,30px); margin: 0 0 4px; }
+.dd-tag { color: var(--text-soft); margin: 0; font-size: 15px; }
+.dd-body { display: flex; flex-direction: column; gap: 16px; }
+.dd-block { background: linear-gradient(180deg, var(--surface), var(--surface-2)); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 0 var(--r-md) var(--r-md) 0; padding: 16px 20px; }
+.dd-block h4 { font-family: var(--font-display); font-size: 15px; margin: 0 0 8px; color: var(--accent-2); letter-spacing: .3px; }
+.dd-block p { margin: 0 0 12px; color: var(--text-soft); font-size: 14.5px; }
+.dd-block .code-wrap { margin-top: 4px; }
+
 /* ============ Code blocks (Python primer + problems) ============ */
 .code-wrap { border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; background: #282a36; }
 .code-bar { display: flex; align-items: center; gap: 7px; padding: 9px 14px; background: rgba(0,0,0,.25); border-bottom: 1px solid rgba(255,255,255,.06); }

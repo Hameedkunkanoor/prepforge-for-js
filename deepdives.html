@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aurora">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Every system-design topic explained from origin to internals, with sample code." />
+  <title>Deep Dives — System Design From Origin to Internals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <button id="menu-toggle" class="icon-btn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    <a class="brand" href="index.html">
+      <span class="brand-mark">◈</span>
+      <span class="brand-text"><strong>PrepForge</strong><em>for JS</em></span>
+    </a>
+    <nav class="page-nav" aria-label="Pages"></nav>
+    <div class="topbar-search">
+      <svg viewBox="0 0 24 24" class="search-ico" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 19a8 8 0 100-16 8 8 0 000 16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search" type="search" placeholder="Search deep dives, e.g. caching, raft…" autocomplete="off" />
+      <kbd>/</kbd>
+    </div>
+    <div class="topbar-controls">
+      <div class="select-wrap" title="Color theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 000 18c1.7 0 2-1.3 1.2-2.2-.8-1-.2-2.3 1-2.3H17a4 4 0 004-4c0-5-4-9.5-9-9.5z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="7.5" cy="11" r="1.2" fill="currentColor"/><circle cx="12" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="11" r="1.2" fill="currentColor"/></svg>
+        <select id="theme-select" aria-label="Color theme"></select>
+      </div>
+      <button id="mode-toggle" class="icon-btn pill" aria-label="Toggle light/dark"><span class="mode-ico">🌙</span></button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar" class="sidebar">
+      <nav id="nav" class="nav" aria-label="Deep dive topics"></nav>
+    </aside>
+    <div id="backdrop" class="backdrop"></div>
+
+    <main id="top" class="content">
+      <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-inner">
+          <span class="eyebrow">ORIGIN → INTERNALS → CODE</span>
+          <h1>System Design, Explained in Depth</h1>
+          <p>Every core topic told as a story: where it came from, the problem it solves, exactly how it works behind the scenes, when to use it, the tradeoffs, and sample code you can read.</p>
+          <p class="dedication">✨ Curated for <strong>JS&nbsp;Mam</strong> ✨</p>
+          <div class="hero-stats" id="hero-stats"></div>
+        </div>
+      </section>
+
+      <div id="sections"></div>
+
+      <footer class="site-foot">
+        <p class="credit">Crafted with care for <strong>JS&nbsp;Mam</strong> 💛</p>
+        <p class="muted">HLD Masterclass · <span id="year"></span></p>
+      </footer>
+    </main>
+  </div>
+
+  <button id="to-top" class="to-top" aria-label="Back to top">↑</button>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-java.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/shell.js"></script>
+  <script src="assets/js/deepdives-data.js"></script>
+  <script src="assets/js/deepdives.js"></script>
+  <script src="assets/js/enhance.js"></script>
+</body>
+</html>
