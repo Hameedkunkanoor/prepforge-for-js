@@ -34,12 +34,14 @@ window.DEEPDIVES = [
   ]},
   /* =========================================== CONSISTENT HASHING === */
   { id: "dd-chash", cat: "Distributed Systems", icon: "🧭", level: "Intermediate", title: "Consistent Hashing", tagline: "Add/remove nodes moving only ~1/N of data.", chapters: [
-    { h: "Problem", p: ["hash(key)%N is even, but changing N remaps almost every key — caches cold, shards reshuffle. Consistent hashing moves only ~1/N keys on membership change."] },
-    { h: "Origin", p: ["Karger et al., MIT 1997, for web caching; Amazon Dynamo (2007) made it mainstream."] },
-    { h: "How it works", p: ["Hash nodes and keys to a ring (0..2^32). Key → first node clockwise. Remove → keys go to next node only; add → steal a slice. Virtual nodes (many points/server) smooth skew + weighting."], code: `String get(String k){var e=ring.ceilingEntry(hash(k));return(e==null?ring.firstEntry():e).getValue();}` },
-    { h: "Used in", bullets: ["Distributed caches, DynamoDB/Cassandra, CDN routing, sharded queues."] },
-    { h: "Tradeoffs", bullets: ["Skew without enough vnodes; O(log V) lookup; range queries scatter; replicate to next K nodes."] },
-    { h: "Interview Q&A", bullets: ["Why vnodes? even spread + weight + smooth rebalance.","Replication? next K clockwise."] },
+    { h: "Problem", p: ["The naive way to spread keys is hash(key) % N. It's even, but the moment N changes — a cache node dies, you add a shard — almost every key maps somewhere new. For a cache that means a near-total cold start; for a database that means moving nearly all the data. Consistent hashing changes only ~1/N keys when membership changes."] },
+    { h: "Origin", p: ["Invented by Karger et al. at MIT (1997) for web caching, then popularized by Amazon's Dynamo paper (2007). Today it underpins DynamoDB, Cassandra, Riak, and most CDN routing."] },
+    { h: "How it works", p: ["Map both nodes and keys onto a circular hash space (0..2^32). A key belongs to the first node found clockwise. Remove a node and only its keys slide to the next node; add one and it only steals a slice from its neighbor — everyone else is untouched."], code: `String get(String k){ var e = ring.ceilingEntry(hash(k)); return (e==null ? ring.firstEntry() : e).getValue(); }` },
+    { h: "Virtual nodes", p: ["With few nodes the ring is lumpy and load skews. Give each server many points on the ring (vnodes); now load averages out and you can weight a bigger server with more vnodes. Rebalancing also gets smoother since one node's keys spread across many neighbors."] },
+    { h: "Replication on the ring", p: ["Store each key on the next K nodes clockwise. If the primary dies, the next holds a copy. Combined with quorum reads/writes this gives availability + tunable consistency."] },
+    { h: "Used in", bullets: ["Distributed caches, DynamoDB/Cassandra partitioning, CDN routing, sharded queues."] },
+    { h: "Tradeoffs", bullets: ["Skew without enough vnodes; O(log V) lookup; range queries scatter; rebalancing must move replicas too."] },
+    { h: "Interview Q&A", bullets: ["Why vnodes? even spread + weighting + smooth rebalance.","Replication? next K clockwise.","hash%N problem? mass remap on resize."] },
   ]},
   /* ================================================== SHARDING ===== */
   { id: "dd-shard", cat: "Data & Storage", icon: "🧩", level: "Intermediate → Advanced", title: "Sharding", tagline: "Split data across machines to scale writes and storage.", chapters: [
@@ -54,13 +56,13 @@ window.DEEPDIVES = [
   ]},
   /* ================================================ REPLICATION ==== */
   { id: "dd-repl", cat: "Data & Storage", icon: "📑", level: "Intermediate", title: "Replication", tagline: "Copies for availability, read-scale, and durability.", chapters: [
-    { h: "What & why", p: ["One copy is a single point of failure and a read bottleneck. Replication keeps multiple copies so reads scale, a dead node loses nothing, and failover continues service.","It's how databases get HA and read throughput before you reach for sharding."] },
-    { h: "Topologies", bullets: ["Leader-follower: writes→leader, stream to followers (standard).","Multi-leader: write anywhere, conflict resolution needed.","Leaderless quorum: R+W>N overlap (Dynamo/Cassandra)."] },
-    { h: "Sync vs async", bullets: ["Sync: wait for replica ack — safe, slower, lower availability.","Async: fast, can lose recent writes on failover.","Semi-sync: ack from one replica balances both."] },
-    { h: "Replica lag", p: ["Async replicas trail, causing stale reads. Fix with read-your-writes (read leader after write), monotonic reads (same replica), or wait-for-LSN."], code: `Conn pick(boolean wrote){ return wrote ? leader() : replica(); }` },
-    { h: "Failover & split-brain", bullets: ["Promote a follower on leader death; quorum/fencing prevents two leaders.","Lost async writes on promotion; rehearse failover."] },
-    { h: "Quorum math", p: ["N replicas, W write acks, R read acks. R+W>N guarantees a read overlaps a write → see latest. Tune for consistency vs latency."] },
-    { h: "Interview Q&A", bullets: ["Lag fix: sticky-to-leader.","Quorum: R+W>N.","Sync vs async tradeoff: safety vs latency."] },
+    { h: "What & why", p: ["A single copy of data is two problems at once: if that node dies you lose everything, and all reads pile onto one machine. Replication keeps multiple synchronized copies so reads scale across replicas, a failure loses nothing, and you can fail over. It's how databases get high availability and read throughput before you ever reach for sharding."] },
+    { h: "Topologies", p: ["Leader-follower: all writes go to one leader which streams its change-log to followers that serve reads — simple, the default. Multi-leader: write to several leaders (multi-region) with conflict resolution. Leaderless (Dynamo/Cassandra): write to any, read from a quorum, repair in background."], bullets: ["Leader-follower: easy, single writer.","Multi-leader: write locally, resolve conflicts.","Leaderless: R+W>N quorum."] },
+    { h: "Sync vs async", p: ["Synchronous replication waits for a replica to ack before confirming the write — safe but slower and stalls if a replica is down. Asynchronous confirms immediately and streams later — fast, but a leader crash can lose the last few writes. Semi-sync (ack from one replica) is the common middle ground."] },
+    { h: "Replica lag", p: ["Async replicas trail the leader by milliseconds to seconds. A user who just wrote may read a replica and not see their change. Fixes: read-your-writes (send their reads to the leader briefly), monotonic reads (pin to one replica), or wait for the replica to reach the write's log position (LSN)."], code: `Conn pick(boolean justWrote){ return justWrote ? leader() : replica(); }` },
+    { h: "Failover & split-brain", p: ["On leader death a follower is promoted. Risks: lost un-replicated async writes, and split-brain if two nodes both think they're leader. Quorum + fencing tokens prevent two leaders. Failover must be rehearsed or it's just hope."] },
+    { h: "Quorum math", p: ["With N replicas, requiring W write-acks and R read-acks: if R+W>N every read overlaps the latest write, so you read fresh. Lower R/W for speed and availability; raise for consistency — a tunable slider."] },
+    { h: "Interview Q&A", bullets: ["Stale read fix: sticky-to-leader / monotonic reads.","Quorum: R+W>N.","Sync vs async: safety vs latency.","Split-brain: quorum + fencing."] },
   ]},
   /* ============================================== CONSISTENCY ====== */
   { id: "dd-consistency", cat: "Distributed Systems", icon: "⚖️", level: "Advanced", title: "CAP, PACELC & Consistency", tagline: "The theory interviewers love — said precisely.", chapters: [
@@ -84,20 +86,21 @@ window.DEEPDIVES = [
   ]},
   /* ============================================= RATE LIMITING ===== */
   { id: "dd-rl", cat: "Reliability", icon: "🚦", level: "Intermediate", title: "Rate Limiting", tagline: "Protect systems and enforce fair use.", chapters: [
-    { h: "Why", p: ["One client/attacker can exhaust shared capacity. Cap requests per key (user/IP/API key) to protect backends, ensure fairness, and stop brute-force/abuse."] },
-    { h: "Algorithms", bullets: ["Fixed window: simple, edge bursts.","Sliding window: smoother.","Token bucket: bursts up to cap, steady refill.","Leaky bucket: constant output."], code: `t=min(c,t+dt*r); if(t>=1){t--;allow;}else 429;` },
-    { h: "Distributed", p: ["Counters in Redis with an atomic Lua script so nodes can't oversell the last token. Local buckets + periodic sync at extreme scale (slightly approximate)."] },
-    { h: "Failure policy", bullets: ["Store down → fail-open (availability) vs fail-closed (protection)."] },
-    { h: "Interview Q&A", bullets: ["1M rps → local + sync.","Bursts → token bucket.","Per-tenant quotas at gateway."] },
+    { h: "Why", p: ["A single client or attacker can hammer an endpoint and exhaust shared capacity, starving everyone else. Rate limiting caps how many requests a key (user, IP, API key) may make per window, protecting backends, enforcing fairness/quotas, and blocking brute-force and scraping."] },
+    { h: "Algorithms", p: ["Fixed window: count per minute, simple but allows 2x bursts at the boundary. Sliding window: smooths that with a moving range. Token bucket: tokens refill at a steady rate, each request spends one, empty→reject — allows controlled bursts, the common default. Leaky bucket: drains at a constant rate, smoothing output."], code: `t = min(cap, t + dt*rate);  // refill\nif (t >= 1) { t--; allow; } else reject(429);` },
+    { h: "Distributed", p: ["With many app nodes the counter must be shared. A central Redis with an atomic Lua script does refill+consume in one round trip so two nodes can't both grab the last token. At extreme scale, give each node a local allowance and sync periodically — fast but slightly approximate."] },
+    { h: "Failure policy", p: ["If the limiter store is down you must choose: fail-open (allow traffic, protect UX) or fail-closed (reject, protect backend). Public APIs usually fail-open with a local fallback; sensitive endpoints fail-closed."] },
+    { h: "Response", bullets: ["Return 429 + Retry-After; expose X-RateLimit headers; tiered quotas per plan."] },
+    { h: "Interview Q&A", bullets: ["1M rps: local buckets + periodic sync.","Allow bursts: token bucket.","Where: gateway, per user/key.","Store down: fail-open vs closed."] },
   ]},
   /* ============================================= INDEXING ========= */
   { id: "dd-index", cat: "Data & Storage", icon: "🗂️", level: "Intermediate → Advanced", title: "Indexing (B-tree vs LSM)", tagline: "Why a query is instant or scans a million rows.", chapters: [
-    { h: "Why", p: ["No index = full scan O(n). An index is a sorted structure → O(log n) lookups, range scans, ordering. Choosing indexes is the difference between 1ms and 10s."] },
-    { h: "B-tree", p: ["Balanced, sorted, in-place updates; great reads + ranges; default in Postgres/MySQL. Leaf nodes link for scans; height ~3–4 for millions of rows."] },
-    { h: "LSM-tree", p: ["Writes → in-memory memtable → flush to immutable sorted SSTables, compacted in background. Fast writes; reads check multiple files (Bloom filters skip). Cassandra/RocksDB."] },
-    { h: "Rules", bullets: ["Index WHERE/JOIN/ORDER columns; composite for multi-col; leftmost-prefix rule; each index slows writes + storage."], code: `CREATE INDEX i ON orders(user_id, created_at DESC);` },
-    { h: "Pitfalls", bullets: ["Over-indexing; low-cardinality indexes; LSM read/space amplification; covering vs lookup."] },
-    { h: "Interview Q&A", bullets: ["B-tree vs LSM: read/range vs write-heavy.","Composite order matters.","Write amplification in LSM."] },
+    { h: "Why", p: ["Finding rows by a column with no index means scanning every row — O(n), seconds on millions of rows. An index is a separate sorted structure that turns that into O(log n), and enables range scans and ORDER BY for free. Choosing indexes well is the difference between 1ms and 10s."] },
+    { h: "B-tree (read-optimized)", p: ["A balanced tree kept sorted by key; ~3–4 levels deep covers millions of rows, so a lookup is a handful of page reads. Leaf nodes link sideways for range scans. Updates modify pages in place. It's the default in Postgres/MySQL/Oracle — great for reads and ranges, moderate for writes."] },
+    { h: "LSM-tree (write-optimized)", p: ["Writes go to an in-memory memtable, then flush to immutable sorted files (SSTables); background compaction merges them. Writes are sequential and fast; reads may check several files, so a Bloom filter per file skips ones that can't have the key. Powers Cassandra, RocksDB, LevelDB — ideal for write-heavy workloads."] },
+    { h: "Rules of thumb", bullets: ["Index columns in WHERE / JOIN / ORDER BY.","Composite index obeys leftmost-prefix: (a,b) helps a and a+b, not b alone.","Each index speeds reads but slows writes and costs storage.","Covering index = query answered from the index, no row fetch."], code: `CREATE INDEX idx ON orders(user_id, created_at DESC); -- filter+sort` },
+    { h: "Pitfalls", bullets: ["Over-indexing kills write throughput.","Low-cardinality index (gender) barely helps.","LSM read/space amplification + compaction cost.","Function/leading-wildcard kills index use."] },
+    { h: "Interview Q&A", bullets: ["B-tree vs LSM: read/range vs write-heavy.","Composite order matters (leftmost prefix).","Why slow query? missing/unusable index."] },
   ]},
   { id: "dd-bloom", cat: "Patterns", icon: "🌸", level: "Intermediate", title: "Bloom Filter", tagline: "Maybe present, definitely absent — in tiny space.", chapters: [
     { h: "Why", p: ["Existence checks against huge sets are costly. A Bloom filter answers in bits: 'definitely not present' (skip the lookup) or 'maybe' (verify), with a tiny false-positive rate and never false negatives."] },
