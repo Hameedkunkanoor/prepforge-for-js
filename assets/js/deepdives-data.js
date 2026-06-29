@@ -103,10 +103,11 @@ window.DEEPDIVES = [
     { h: "Interview Q&A", bullets: ["B-tree vs LSM: read/range vs write-heavy.","Composite order matters (leftmost prefix).","Why slow query? missing/unusable index."] },
   ]},
   { id: "dd-bloom", cat: "Patterns", icon: "🌸", level: "Intermediate", title: "Bloom Filter", tagline: "Maybe present, definitely absent — in tiny space.", chapters: [
-    { h: "Why", p: ["Existence checks against huge sets are costly. A Bloom filter answers in bits: 'definitely not present' (skip the lookup) or 'maybe' (verify), with a tiny false-positive rate and never false negatives."] },
-    { h: "How", p: ["A bit array + k hash functions. Insert sets k bits; query needs all set. Tune m (bits) and k (hashes) for n items to hit a target FP rate. Basic version can't delete; counting BF can."], code: `add: for k hashes set bit; query: all set ? maybe : definitely-no;` },
-    { h: "Uses", bullets: ["Cassandra/HBase skip SSTable reads, CDN, dedupe, cache-penetration guard, malicious-URL screen."] },
-    { h: "Tradeoffs", bullets: ["False positives only; sized up front; no enumerate."] },
+    { h: "Why", p: ["Asking 'have I seen this before?' against a huge set normally means a disk or DB lookup. A Bloom filter answers in a few in-memory bit checks: either 'definitely not present' (skip the expensive lookup entirely) or 'maybe present' (then verify). It uses a fraction of the memory a real set would, never gives a false negative, and only rarely a false positive."] },
+    { h: "How it works", p: ["A bit array of m bits plus k hash functions. To insert, hash the item k ways and set those k bits. To query, hash and check all k bits: if any is 0 the item is definitely absent; if all are 1 it's probably present. More items eventually flip all bits, raising false positives, so size m and k for your n and target rate. Basic filters can't delete; a counting Bloom filter (counters not bits) can."], code: `void add(String s){ for(int i=0;i<k;i++) bit[idx(s,i)]=true; }\nboolean maybe(String s){ for(int i=0;i<k;i++) if(!bit[idx(s,i)]) return false; return true; }` },
+    { h: "Uses", bullets: ["Cassandra/HBase skip SSTables that can't hold a key.","Cache-penetration guard (block lookups for keys that don't exist).","Dedup, spam/malicious-URL screening, CDN."] },
+    { h: "Tradeoffs", bullets: ["False positives only; must size up front; can't enumerate; counting BF for deletes."] },
+    { h: "Interview Q&A", bullets: ["FP vs FN: only FP.","Stop missing-key DB hits: front with Bloom.","Tune m,k for FP rate."] },
   ]},
   { id: "dd-lock", cat: "Distributed Systems", icon: "🔒", level: "Intermediate", title: "Distributed Locks", tagline: "One process at a time across many machines.", chapters: [
     { h: "What & why", p: ["Two workers doing the same critical action (reserve the last item, run a singleton cron) corrupt state. A distributed lock gives mutual exclusion across processes that share no memory."] },
@@ -278,13 +279,15 @@ window.DEEPDIVES = [
     { h: "Use", p: ["Uber driver matching, maps, store locators, geofencing. Tune cell size to density — small cells for cities, large for rural — to balance precision vs lookups."] },
   ]},
   { id: "dd-modeling", cat: "Data & Storage", icon: "🧩", level: "Intermediate", title: "Data Modeling & Denormalization", tagline: "Shape data for the queries you'll run.", chapters: [
-    { h: "Normalize vs denormalize", bullets: ["Normalize: no duplication, clean writes, more joins.","Denormalize: duplicate for fast reads, harder writes — the NoSQL default."] },
-    { h: "Model the query", p: ["In NoSQL you design tables per access pattern up front; you can't bolt on joins later. The key + sort decide everything."] },
-    { h: "Materialized views", p: ["Precompute hot aggregations/feeds; refresh on a cadence; trade staleness for instant reads."] },
+    { h: "Normalize vs denormalize", p: ["Normalization removes duplication: each fact lives once, writes are clean, but reads need joins. Denormalization copies data so a read needs no joins — fast reads, but writes must update every copy and consistency gets harder. SQL leans normalized; NoSQL leans denormalized."] },
+    { h: "Model the query (NoSQL)", p: ["In NoSQL there are no joins to lean on, so you design tables around access patterns up front. The partition key and sort key decide everything: what you can fetch in one call and in what order. Get the keys wrong and the workload is impossible — plan queries before schema."] },
+    { h: "Materialized views", p: ["Precompute expensive aggregations or feeds and store the result; refresh on a cadence or via events. Reads become instant at the cost of staleness and refresh complexity — the same denormalization tradeoff applied to derived data."] },
+    { h: "Interview Q&A", bullets: ["Read-heavy screen: denormalize.","NoSQL design: per access pattern.","Aggregations: materialized view."] },
   ]},
-  { id: "dd-ordering", cat: "Distributed Systems", icon: "🔢", level: "Advanced", title: "Ordering & Exactly-Once", tagline: "Make events land in order, once.", chapters: [
-    { h: "Why hard", p: ["Clocks differ (skew) so wall-time can't order events across machines, and retries duplicate. You need logical order + dedup."] },
-    { h: "Logical clocks", bullets: ["Lamport: total-ish order; vector clocks: causality; per-partition sequence (Kafka)."] },
-    { h: "Exactly-once", bullets: ["At-least-once delivery + idempotent consumer (dedup key) ≈ exactly-once.","Same key → same partition keeps order."] },
+  { id: "dd-ordering", cat: "Distributed Systems", icon: "🔢", level: "Advanced", title: "Ordering & Exactly-Once", tagline: "Make distributed events land in the right order, once.", chapters: [
+    { h: "Why it's hard", p: ["Across machines, clocks drift (skew), so wall-clock timestamps can't reliably order events. Networks reorder and retry, so the same event may arrive twice or out of sequence. You need logical ordering plus deduplication, not the system clock."] },
+    { h: "Logical clocks", p: ["Lamport timestamps give a consistent total-ish order; vector clocks capture causality (who-knew-what); Kafka gives a strict order within a partition via offsets. Pick the weakest that solves your problem — full global order is expensive."] },
+    { h: "Exactly-once", p: ["True exactly-once delivery is nearly impossible; the practical recipe is at-least-once delivery + an idempotent consumer (dedupe by event id). Route related events to the same partition key so order is preserved where it matters."] },
+    { h: "Interview Q&A", bullets: ["Order across machines? logical clocks, not wall time.","Exactly-once? at-least-once + dedupe.","Keep order? same key → same partition."] },
   ]},
 ];
