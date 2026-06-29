@@ -180,9 +180,11 @@ window.DEEPDIVES = [
   ]},
   /* ============================ NEW BEGINNER-CRITICAL TOPICS ====== */
   { id: "dd-numbers", cat: "Fundamentals", icon: "🔢", level: "Beginner", title: "Latency Numbers & Estimation", tagline: "The numbers every engineer should know cold.", chapters: [
-    { h: "Why", p: ["Designs live or die on rough math. Knowing relative speeds lets you put caches/CDNs in the right place and size systems on a whiteboard."] },
-    { h: "Key numbers", bullets: ["L1 ≈ 1ns; RAM ≈ 100ns; SSD read ≈ 100µs; disk seek ≈ 10ms.","Same-DC RTT ≈ 0.5ms; cross-region ≈ 50–150ms.","1 Gbps ≈ 125MB/s."] },
-    { h: "Estimation", bullets: ["QPS = DAU × actions/day ÷ 86400; peak ×2–5.","Storage = writes/day × size × retention.","Memory = working-set ≈ 20% of data."] },
+    { h: "Why", p: ["Designs live or die on rough math. Knowing relative speeds tells you where to put caches/CDNs and lets you size a system on a whiteboard in 60 seconds."] },
+    { h: "Latency ladder", bullets: ["L1 ~1ns, L2 ~4ns, RAM ~100ns.","SSD read ~100µs, disk seek ~10ms.","Same-DC RTT ~0.5ms; cross-region ~50–150ms.","1 Gbps ≈ 125 MB/s."] },
+    { h: "Powers of two", bullets: ["KB 10^3, MB 10^6, GB 10^9, TB 10^12. char=1B, int=4B, UUID=16B."] },
+    { h: "Estimation recipe", bullets: ["QPS = DAU × actions/day ÷ 86400; peak × 2–5.","Storage = writes/day × size × retention.","Bandwidth = QPS × payload.","Servers = peak QPS ÷ per-box QPS."] },
+    { h: "Example", p: ["100M DAU × 10 reads = 1B/day ≈ 11.6K QPS avg, ~35K peak. Cache 2KB items → ~70 MB/s. One Redis + a few app boxes handle it."] },
   ]},
   { id: "dd-dns", cat: "Networking & Delivery", icon: "🌐", level: "Beginner", title: "DNS", tagline: "Turning names into addresses, and routing users.", chapters: [
     { h: "What & why", p: ["Humans use names, networks use IPs. DNS maps a domain to an address — and is the first place you can route users by geography, balance load, and fail over between regions."] },
@@ -239,8 +241,9 @@ window.DEEPDIVES = [
     { h: "When to use", bullets: ["Time-series for metrics/IoT; graph when relationships are the query. Both are niche — don't default to them."] },
   ]},
   { id: "dd-warehouse", cat: "Data & Storage", icon: "🏭", level: "Intermediate", title: "Warehouse, Lake & OLAP", tagline: "Analytics over huge historical data.", chapters: [
-    { h: "OLTP vs OLAP", bullets: ["OLTP serves the app (rows). OLAP answers business questions (columnar scans)."] },
-    { h: "Warehouse/lake", bullets: ["Warehouse: structured analytics (Snowflake/BigQuery). Lake: raw cheap blobs, schema-on-read; lakehouse unifies."] },
+    { h: "OLTP vs OLAP", bullets: ["OLTP: many small row reads/writes serving the app (Postgres).","OLAP: few huge columnar scans answering business questions (Snowflake)."] },
+    { h: "Warehouse vs lake", bullets: ["Warehouse: structured columnar SQL analytics (BigQuery/Redshift).","Lake: raw cheap object storage, schema-on-read (S3).","Lakehouse unifies both (Databricks/Delta)."] },
+    { h: "Pipeline", p: ["OLTP + logs → ETL/ELT → warehouse → BI. Never run heavy analytics on the OLTP DB — it crushes the app."] },
   ]},
   { id: "dd-deploy", cat: "Reliability", icon: "🚀", level: "Intermediate", title: "Safe Deploys: Canary, Blue-Green, Flags", tagline: "Ship without taking the site down.", chapters: [
     { h: "Canary", p: ["Route a small % (e.g. 5%) to the new version, watch error/latency, ramp up if healthy, roll back instantly if not."] },
@@ -262,5 +265,15 @@ window.DEEPDIVES = [
     { h: "Why", p: ["'Drivers near me' on a flat table scans everything. Encode location to a grid cell so nearby = same/adjacent cells → a few key lookups."] },
     { h: "Techniques", bullets: ["Geohash (string prefix), S2 (Hilbert curve), QuadTree. Store in Redis keyed by cell."] },
     { h: "Use", bullets: ["Uber matching, maps, proximity search; tune cell size to density."] },
+  ]},
+  { id: "dd-modeling", cat: "Data & Storage", icon: "🧩", level: "Intermediate", title: "Data Modeling & Denormalization", tagline: "Shape data for the queries you'll run.", chapters: [
+    { h: "Normalize vs denormalize", bullets: ["Normalize: no duplication, clean writes, more joins.","Denormalize: duplicate for fast reads, harder writes — the NoSQL default."] },
+    { h: "Model the query", p: ["In NoSQL you design tables per access pattern up front; you can't bolt on joins later. The key + sort decide everything."] },
+    { h: "Materialized views", p: ["Precompute hot aggregations/feeds; refresh on a cadence; trade staleness for instant reads."] },
+  ]},
+  { id: "dd-ordering", cat: "Distributed Systems", icon: "🔢", level: "Advanced", title: "Ordering & Exactly-Once", tagline: "Make events land in order, once.", chapters: [
+    { h: "Why hard", p: ["Clocks differ (skew) so wall-time can't order events across machines, and retries duplicate. You need logical order + dedup."] },
+    { h: "Logical clocks", bullets: ["Lamport: total-ish order; vector clocks: causality; per-partition sequence (Kafka)."] },
+    { h: "Exactly-once", bullets: ["At-least-once delivery + idempotent consumer (dedup key) ≈ exactly-once.","Same key → same partition keeps order."] },
   ]},
 ];
