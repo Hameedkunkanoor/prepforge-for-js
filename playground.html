@@ -20,13 +20,21 @@
   <header class="topbar">
     <a class="brand" href="index.html"><span class="brand-mark">◈</span><span class="brand-text"><strong>PrepForge</strong><em>for JS</em></span></a>
     <nav class="page-nav" aria-label="Pages"></nav>
-    <div class="pg-picker">
-      <select id="pg-collection" aria-label="Collection">
-        <option value="blind">Blind 80</option>
-        <option value="microsoft">Microsoft</option>
-        <option value="fresh">Fresh 20</option>
-      </select>
-      <select id="pg-select" aria-label="Select problem"></select>
+    <span class="nav-sep" aria-hidden="true"></span>
+    <div class="pg-picker" role="group" aria-label="Problem picker">
+      <span class="pg-picker-tag">SOLVING</span>
+      <label class="pg-field">
+        <span class="pg-field-label">Set</span>
+        <select id="pg-collection" aria-label="Collection">
+          <option value="blind">Blind 80</option>
+          <option value="microsoft">Microsoft</option>
+          <option value="fresh">Fresh 20</option>
+        </select>
+      </label>
+      <label class="pg-field">
+        <span class="pg-field-label">Problem</span>
+        <select id="pg-select" aria-label="Select problem"></select>
+      </label>
     </div>
     <div style="flex:1"></div>
     <div class="topbar-controls">

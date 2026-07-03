@@ -68,11 +68,18 @@ a { color: inherit; text-decoration: none; }
 .navmenu.active .menu-btn { color: #08101e; background: var(--accent-grad); }
 .navmenu.open .menu-btn svg { transform: rotate(180deg); }
 .menu-panel {
-  position: absolute; top: calc(100% + 8px); left: 0; min-width: 190px; z-index: 60;
+  position: absolute; top: calc(100% + 10px); left: 0; min-width: 200px; z-index: 60;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md);
   box-shadow: var(--shadow-lg); padding: 6px; display: none; flex-direction: column; gap: 2px;
 }
-.navmenu:hover .menu-panel, .navmenu.open .menu-panel { display: flex; }
+/* transparent hover bridge so the menu doesn't close when the cursor
+   travels from the button down into the panel */
+.menu-panel::before { content: ""; position: absolute; top: -10px; left: 0; right: 0; height: 10px; }
+.navmenu:hover .menu-panel, .navmenu.open .menu-panel { display: flex; animation: menuIn var(--speed) ease; }
+@keyframes menuIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* Divider between the site navigation and any page-specific controls */
+.nav-sep { width: 1px; height: 26px; background: var(--border); margin: 0 4px; flex: none; }
 .menu-panel .pn-item {
   padding: 9px 13px; border-radius: 9px; font-size: 13.5px; color: var(--text-soft);
   display: flex; align-items: center; gap: 8px; transition: background var(--speed), color var(--speed);
@@ -721,9 +728,19 @@ pre.code-block code { font-family: var(--font-mono); background: none !important
 
 /* ============ Playground ============ */
 .pg-body { overflow: hidden; }
-.pg-picker { display: flex; align-items: center; gap: 8px; }
-.pg-picker label { font-size: 12px; color: var(--text-dim); }
-.pg-picker select { appearance: none; -webkit-appearance: none; padding: 8px 30px 8px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 13px; cursor: pointer; max-width: 320px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 11px center; }
+.pg-picker {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 12px 6px 6px; border: 1px solid var(--border); border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
+.pg-picker-tag {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #08101e;
+  background: var(--accent-grad); padding: 5px 9px; border-radius: 8px;
+}
+.pg-field { display: flex; flex-direction: column; gap: 2px; }
+.pg-field-label { font-size: 9.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim); padding-left: 4px; }
+.pg-picker select { appearance: none; -webkit-appearance: none; padding: 6px 30px 6px 12px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; max-width: 320px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 11px center; }
+.pg-picker select:hover { border-color: var(--accent); }
 .pg-picker select:focus { outline: none; box-shadow: var(--ring); }
 #pg-collection { color: var(--accent-2); font-weight: 600; }
 
@@ -813,9 +830,17 @@ pre.code-block code { font-family: var(--font-mono); background: none !important
   .brand-text em { display: none; }
   .card-title h3 { font-size: 19px; }
   .page-nav a { padding: 7px 10px; font-size: 12.5px; }
+  .nav-sep { display: none; }
+  .pg-picker { padding: 5px 8px 5px 5px; gap: 6px; }
+  .pg-picker-tag { display: none; }
 }
 @media (max-width: 460px) {
-  .page-nav { display: none; }
+  .page-nav {
+    display: flex; order: 3; width: 100%; overflow-x: auto;
+    padding-bottom: 2px; -webkit-overflow-scrolling: touch;
+  }
+  .page-nav::-webkit-scrollbar { display: none; }
+  .topbar { flex-wrap: wrap; row-gap: 8px; }
 }
 
 @media print {
