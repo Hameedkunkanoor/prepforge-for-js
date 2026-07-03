@@ -30,6 +30,7 @@
         <span class="diff ${DIFF_CLASS[p.difficulty]}">${p.difficulty}</span>
         <span class="chip">${p.category}</span>
         <a class="lc-link" href="${p.link}" target="_blank" rel="noopener">LeetCode ↗</a>
+        <a class="solve-link" href="playground.html?id=${p.id}">▶ Solve</a>
         <button class="solve-btn" data-solve="${p.id}" title="Mark solved">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12l5 5L20 7"/></svg>
           <span class="sb-text">${SOLVED.has(p.id) ? "Solved" : "Mark solved"}</span>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aurora">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Playground · PrepForge for JS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+</head>
+<body class="pg-body">
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">◈</span><span class="brand-text"><strong>PrepForge</strong><em>for JS</em></span></a>
+    <nav class="page-nav" aria-label="Pages"></nav>
+    <div class="pg-picker">
+      <label>Problem</label>
+      <select id="pg-select" aria-label="Select problem"></select>
+    </div>
+    <div style="flex:1"></div>
+    <div class="topbar-controls">
+      <div class="select-wrap" title="Color theme"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 000 18c1.7 0 2-1.3 1.2-2.2-.8-1-.2-2.3 1-2.3H17a4 4 0 004-4c0-5-4-9.5-9-9.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><select id="theme-select"></select></div>
+      <button id="mode-toggle" class="icon-btn pill"><span class="mode-ico">🌙</span></button>
+    </div>
+  </header>
+
+  <div class="pg-layout">
+    <section class="pg-left"><div id="pg-desc" class="pg-desc"></div></section>
+
+    <section class="pg-right">
+      <div class="pg-toolbar">
+        <button id="run-btn" class="btn primary pg-run">▶ Run</button>
+        <button id="reset-btn" class="btn ghost">↺ Reset</button>
+        <span id="pg-status" class="pg-status">Ready</span>
+        <span class="pg-hint">Ctrl/⌘ + Enter to run</span>
+      </div>
+      <div class="pg-editor"><textarea id="pg-code"></textarea></div>
+      <div class="pg-console">
+        <div class="pg-con-bar"><span>Console</span><button id="clear-out" class="pg-clear">clear</button></div>
+        <pre id="pg-output" class="pg-output"></pre>
+        <div class="pg-stdin-wrap"><label>stdin (optional)</label><textarea id="pg-stdin" class="pg-stdin" placeholder="input() reads from here…"></textarea></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/shell.js"></script>
+  <script src="assets/js/problems-data.js"></script>
+  <script src="assets/js/playground.js"></script>
+  <script src="assets/js/enhance.js"></script>
+</body>
+</html>
