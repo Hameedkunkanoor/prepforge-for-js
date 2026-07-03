@@ -4,6 +4,7 @@
   "use strict";
   const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const escA = (s) => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
 
   const SETS = {
     blind: window.PROBLEMS || [],
@@ -90,6 +91,34 @@ def to_list(n):
     const p = problem();
     const D = { Easy: "d-easy", Medium: "d-med", Hard: "d-hard" };
     const link = p.link ? `<a class="lc-link" href="${p.link}" target="_blank" rel="noopener">Open on LeetCode ↗</a>` : "";
+    const hasTests = p.tests && p.tests.length;
+    const hasHints = p.hints && p.hints.length;
+    const hasLines = p.lines && p.lines.length;
+
+    const tabs = [["desc", "Description"]];
+    if (hasTests) tabs.push(["tests", "Test cases"]);
+    if (hasHints) tabs.push(["hints", "Hints"]);
+    tabs.push(["sol", "Solution"]);
+
+    const testsHTML = hasTests
+      ? `<div class="tests-list">${p.tests.map((t) => `
+          <div class="tc">
+            <div class="tc-io"><span class="tc-in">${esc(t[0])}</span><span class="tc-arrow">→</span><span class="tc-out">${esc(t[1])}</span></div>
+            <button class="tc-run" data-call="${escA(t[0])}">▶ try</button>
+          </div>`).join("")}</div>
+         <p class="tc-note">Click <b>▶ try</b> to append the call and run it.</p>`
+      : "";
+
+    const hintsHTML = hasHints
+      ? `<div class="hints-list">${p.hints.map((h, i) => `
+          <details class="hint"><summary>Hint ${i + 1}</summary><p>${h}</p></details>`).join("")}</div>`
+      : "";
+
+    const walkthrough = hasLines
+      ? `<h4 class="sol-h">Line-by-line</h4><div class="lines">${p.lines.map((l) => `
+          <div class="ln"><code class="ln-c">${esc(l.c)}</code><span class="ln-e">${l.e}</span></div>`).join("")}</div>`
+      : "";
+
     $("#pg-desc").innerHTML = `
       <div class="pg-desc-head">
         <span class="pnum">${String(p.num).padStart(2, "0")}</span>
@@ -97,14 +126,26 @@ def to_list(n):
         <span class="diff ${D[p.difficulty]}">${p.difficulty}</span>
         <span class="chip">${p.category}</span>
       </div>
-      <p class="pg-statement">${p.statement}</p>
-      <div class="problem-idea"><span class="lab">Approach</span>${p.idea}</div>
-      <div class="cx"><span class="cx-time">⏱ ${p.time}</span><span class="cx-space">💾 ${p.space}</span></div>
-      <details class="pg-ref"><summary>Reference solution</summary>
-        <pre class="code-block"><code class="language-python">${esc(p.code)}</code></pre></details>
-      <details class="pg-ref"><summary>Explanation & trace</summary>
-        <p>${p.explanation}</p><ol class="trace-steps">${p.trace.map((t) => `<li>${esc(t)}</li>`).join("")}</ol></details>
-      ${link}`;
+      <div class="pg-tabs">${tabs.map((t, i) => `<button class="pg-tab ${i === 0 ? "active" : ""}" data-tab="${t[0]}">${t[1]}</button>`).join("")}</div>
+
+      <div class="pg-tab-panel active" data-panel="desc">
+        <p class="pg-statement">${p.statement}</p>
+        <div class="problem-idea"><span class="lab">Approach</span>${p.idea}</div>
+        <div class="cx"><span class="cx-time">⏱ ${p.time}</span><span class="cx-space">💾 ${p.space}</span></div>
+        ${link}
+      </div>
+      ${hasTests ? `<div class="pg-tab-panel" data-panel="tests"><h4 class="sol-h">Sample test cases</h4>${testsHTML}</div>` : ""}
+      ${hasHints ? `<div class="pg-tab-panel" data-panel="hints"><p class="hint-intro">Stuck? Reveal one hint at a time.</p>${hintsHTML}</div>` : ""}
+
+      <div class="pg-tab-panel" data-panel="sol">
+        ${walkthrough}
+        <h4 class="sol-h">Full solution</h4>
+        <pre class="code-block"><code class="language-python">${esc(p.code)}</code></pre>
+        <h4 class="sol-h">Explanation</h4>
+        <p class="sol-exp">${p.explanation}</p>
+        <h4 class="sol-h">Trace</h4>
+        <ol class="trace-steps">${p.trace.map((t) => `<li>${esc(t)}</li>`).join("")}</ol>
+      </div>`;
     if (window.Prism) window.Prism.highlightAll();
   }
 
@@ -190,6 +231,26 @@ def to_list(n):
     snip.innerHTML = '<option value="">+ Insert…</option>' + Object.keys(SNIPPETS).map((k) => `<option value="${k}">${k}</option>`).join("");
     snip.addEventListener("change", () => { const code = SNIPPETS[snip.value]; if (code) { editor.replaceSelection(code); editor.focus(); } snip.value = ""; });
     updateIntelliBtn();
+
+    // tab switching + test "try" buttons (delegated on the stable panel container)
+    $("#pg-desc").addEventListener("click", (e) => {
+      const tab = e.target.closest(".pg-tab");
+      if (tab) {
+        const which = tab.getAttribute("data-tab");
+        document.querySelectorAll(".pg-tab").forEach((t) => t.classList.toggle("active", t === tab));
+        document.querySelectorAll(".pg-tab-panel").forEach((p) => p.classList.toggle("active", p.getAttribute("data-panel") === which));
+        return;
+      }
+      const tc = e.target.closest(".tc-run");
+      if (tc) {
+        const call = tc.getAttribute("data-call");
+        const parts = call.split(";").map((s) => s.trim()).filter(Boolean);
+        const last = parts.pop();
+        const stmt = parts.length ? parts.join("\n") + "\n" : "";
+        editor.replaceRange("\n" + stmt + "print(" + last + ")\n", { line: editor.lineCount(), ch: 0 });
+        run();
+      }
+    });
   }
 
   function init() {
