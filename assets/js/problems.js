@@ -7,6 +7,8 @@
   const escAttr = (s) => String(s).replace(/&/g, "&amp;").replace(/"/g, "&quot;");
 
   const DIFF_CLASS = { Easy: "d-easy", Medium: "d-med", Hard: "d-hard" };
+  const PROBLEMS = window.ACTIVE_PROBLEMS || window.PROBLEMS || [];
+  const SET_ID = window.ACTIVE_SET || "blind";
   let activeDiff = "All";
   let activeCat = "All";
   let activeStatus = "All";
@@ -17,7 +19,7 @@
 
   function categories() {
     const map = {};
-    window.PROBLEMS.forEach((p) => (map[p.category] = (map[p.category] || 0) + 1));
+    PROBLEMS.forEach((p) => (map[p.category] = (map[p.category] || 0) + 1));
     return Object.keys(map).sort().map((c) => [c, map[c]]);
   }
 
@@ -29,8 +31,8 @@
         <h3>${p.title}</h3>
         <span class="diff ${DIFF_CLASS[p.difficulty]}">${p.difficulty}</span>
         <span class="chip">${p.category}</span>
-        <a class="lc-link" href="${p.link}" target="_blank" rel="noopener">LeetCode ↗</a>
-        <a class="solve-link" href="playground.html?id=${p.id}">▶ Solve</a>
+        ${p.link ? `<a class="lc-link" href="${p.link}" target="_blank" rel="noopener">LeetCode ↗</a>` : ""}
+        <a class="solve-link" href="playground.html?set=${SET_ID}&id=${p.id}">▶ Solve</a>
         <button class="solve-btn" data-solve="${p.id}" title="Mark solved">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12l5 5L20 7"/></svg>
           <span class="sb-text">${SOLVED.has(p.id) ? "Solved" : "Mark solved"}</span>
@@ -85,7 +87,7 @@
           ${["All", "Easy", "Medium", "Hard"].map((d) => `<button class="fb-diff ${d === "All" ? "active" : ""}" data-diff="${d}">${d}</button>`).join("")}
         </div>
         <select id="cat-select" class="fb-cat">
-          <option value="All">All categories (${window.PROBLEMS.length})</option>
+          <option value="All">All categories (${PROBLEMS.length})</option>
           ${cats.map(([c, n]) => `<option value="${escAttr(c)}">${c} (${n})</option>`).join("")}
         </select>
         <div class="fb-search">
@@ -119,7 +121,7 @@
       if (show) visible++;
     });
     const rc = $("#result-count");
-    if (rc) rc.textContent = `${visible} / ${window.PROBLEMS.length} shown`;
+    if (rc) rc.textContent = `${visible} / ${PROBLEMS.length} shown`;
     updateSolved();
     let empty = $("#problems-empty");
     if (!visible) {
@@ -132,11 +134,11 @@
   function updateSolved() {
     const done = [...SOLVED].filter((id) => document.getElementById(id)).length;
     const sc = $("#solved-count");
-    if (sc) sc.textContent = `${done} / ${window.PROBLEMS.length} solved`;
+    if (sc) sc.textContent = `${done} / ${PROBLEMS.length} solved`;
     const fill = $("#pr-fill"), rc = $("#read-count"), tc = $("#total-count");
     if (rc) rc.textContent = done;
-    if (tc) tc.textContent = window.PROBLEMS.length;
-    if (fill) fill.style.width = (done / window.PROBLEMS.length) * 100 + "%";
+    if (tc) tc.textContent = PROBLEMS.length;
+    if (fill) fill.style.width = (done / PROBLEMS.length) * 100 + "%";
   }
 
   function randomProblem() {
@@ -188,11 +190,11 @@
   }
 
   function render() {
-    $("#sections").innerHTML = filterbarHTML() + `<div class="problems-list">${window.PROBLEMS.map(problemHTML).join("")}</div>`;
+    $("#sections").innerHTML = filterbarHTML() + `<div class="problems-list">${PROBLEMS.map(problemHTML).join("")}</div>`;
     const stats = [
-      [window.PROBLEMS.length, "Problems"],
+      [PROBLEMS.length, "Problems"],
       [categories().length, "Categories"],
-      [window.PROBLEMS.filter((p) => p.difficulty === "Hard").length, "Hard"],
+      [PROBLEMS.filter((p) => p.difficulty === "Hard").length, "Hard"],
       ["Py", "Solutions"],
     ];
     const hs = $("#hero-stats");

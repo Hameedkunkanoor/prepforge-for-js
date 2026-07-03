@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="assets/css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
 </head>
 <body class="pg-body">
@@ -20,7 +21,11 @@
     <a class="brand" href="index.html"><span class="brand-mark">◈</span><span class="brand-text"><strong>PrepForge</strong><em>for JS</em></span></a>
     <nav class="page-nav" aria-label="Pages"></nav>
     <div class="pg-picker">
-      <label>Problem</label>
+      <select id="pg-collection" aria-label="Collection">
+        <option value="blind">Blind 80</option>
+        <option value="microsoft">Microsoft</option>
+        <option value="fresh">Fresh 20</option>
+      </select>
       <select id="pg-select" aria-label="Select problem"></select>
     </div>
     <div style="flex:1"></div>
@@ -37,6 +42,8 @@
       <div class="pg-toolbar">
         <button id="run-btn" class="btn primary pg-run">▶ Run</button>
         <button id="reset-btn" class="btn ghost">↺ Reset</button>
+        <select id="snip-select" class="pg-snip" title="Insert a snippet"><option value="">+ Insert…</option></select>
+        <button id="intelli-btn" class="pg-toggle" title="Toggle IntelliSense">IntelliSense: On</button>
         <span id="pg-status" class="pg-status">Ready</span>
         <span class="pg-hint">Ctrl/⌘ + Enter to run</span>
       </div>
@@ -53,12 +60,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/hint/show-hint.min.js"></script>
   <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
   <script src="assets/js/i18n.js"></script>
   <script src="assets/js/shell.js"></script>
   <script src="assets/js/problems-data.js"></script>
+  <script src="assets/js/ms-data.js"></script>
+  <script src="assets/js/fresh-data.js"></script>
   <script src="assets/js/playground.js"></script>
   <script src="assets/js/enhance.js"></script>
 </body>

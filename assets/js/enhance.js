@@ -16,12 +16,12 @@
   const APP_TAG = "for JS";                // small subtitle next to the name
   const MENUS = [
     { label: "HLD", items: [["Concepts", "index.html"], ["Deep Dives", "deepdives.html"], ["Toolbox", "toolbox.html"], ["Designs", "designs.html"]] },
-    { label: "Coding", items: [["Python", "python.html"], ["Problems", "problems.html"], ["Playground", "playground.html"]] },
+    { label: "Coding", items: [["Python", "python.html"], ["Problems", "problems.html"], ["Microsoft", "microsoft.html"], ["Fresh 20", "fresh.html"], ["Playground", "playground.html"]] },
     { label: "Practice", href: "practice.html" },
   ];
   const SECTION = {
     "index.html": "Concepts", "": "Concepts", "toolbox.html": "Toolbox", "designs.html": "Designs",
-    "python.html": "Python", "problems.html": "Problems", "practice.html": "Practice", "deepdives.html": "Deep Dives", "topic.html": "Deep Dive", "playground.html": "Playground",
+    "python.html": "Python", "problems.html": "Problems", "practice.html": "Practice", "deepdives.html": "Deep Dives", "topic.html": "Deep Dive", "playground.html": "Playground", "microsoft.html": "Microsoft", "fresh.html": "Fresh 20",
   };
   function buildTopNav() {
     const brandText = document.querySelector(".brand .brand-text");

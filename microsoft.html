@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aurora">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Microsoft's most frequently asked coding interview questions with solutions and a playground." />
+  <title>Microsoft Coding Prep · PrepForge for JS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <header class="topbar">
+    <button id="menu-toggle" class="icon-btn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    <a class="brand" href="index.html"><span class="brand-mark">◈</span><span class="brand-text"><strong>PrepForge</strong><em>for JS</em></span></a>
+    <nav class="page-nav" aria-label="Pages"></nav>
+    <div class="topbar-search">
+      <svg viewBox="0 0 24 24" class="search-ico" aria-hidden="true"><path d="M21 21l-4.3-4.3M11 19a8 8 0 100-16 8 8 0 000 16z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="search" type="search" placeholder="Search Microsoft questions…" autocomplete="off" />
+      <kbd>/</kbd>
+    </div>
+    <div class="topbar-controls">
+      <div class="select-wrap" title="Color theme"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 000 18c1.7 0 2-1.3 1.2-2.2-.8-1-.2-2.3 1-2.3H17a4 4 0 004-4c0-5-4-9.5-9-9.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg><select id="theme-select"></select></div>
+      <button id="mode-toggle" class="icon-btn pill"><span class="mode-ico">🌙</span></button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside id="sidebar" class="sidebar">
+      <nav id="nav" class="nav" aria-label="Problem categories"></nav>
+      <div class="sidebar-foot"><div class="progress-ring"><div class="pr-top"><span id="read-count">0</span><small>/ <span id="total-count">0</span> solved</small></div><div class="pr-bar"><i id="pr-fill"></i></div></div></div>
+    </aside>
+    <div id="backdrop" class="backdrop"></div>
+
+    <main id="top" class="content">
+      <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-inner">
+          <span class="eyebrow">MICROSOFT · MOST ASKED</span>
+          <h1>Microsoft Coding Prep</h1>
+          <p>The questions Microsoft asks most often — linked lists, strings, matrices, trees and arrays — each with a clear approach, Python solution, complexity, explanation and a step-by-step trace. Hit <strong>▶ Solve</strong> to run it in the playground.</p>
+          <p class="dedication">✨ Curated for <strong>JS&nbsp;Mam</strong> ✨</p>
+          <div class="hero-stats" id="hero-stats"></div>
+        </div>
+      </section>
+      <div id="sections"></div>
+      <footer class="site-foot">
+        <p class="credit">Crafted with care for <strong>JS&nbsp;Mam</strong> 💛</p>
+        <p class="muted">HLD Masterclass · <span id="year"></span></p>
+      </footer>
+    </main>
+  </div>
+
+  <button id="to-top" class="to-top" aria-label="Back to top">↑</button>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/shell.js"></script>
+  <script src="assets/js/ms-data.js"></script>
+  <script>window.ACTIVE_PROBLEMS = window.MS_PROBLEMS; window.ACTIVE_SET = "microsoft";</script>
+  <script src="assets/js/problems.js"></script>
+  <script src="assets/js/enhance.js"></script>
+</body>
+</html>
