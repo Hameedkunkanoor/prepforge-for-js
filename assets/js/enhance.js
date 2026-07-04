@@ -16,12 +16,14 @@
   const APP_TAG = "for JS";                // small subtitle next to the name
   const MENUS = [
     { label: "HLD", items: [["Concepts", "index.html"], ["Deep Dives", "deepdives.html"], ["Toolbox", "toolbox.html"], ["Designs", "designs.html"]] },
-    { label: "Coding", items: [["Python", "python.html"], ["Problems", "problems.html"], ["Microsoft", "microsoft.html"], ["Fresh 20", "fresh.html"], ["Playground", "playground.html"]] },
-    { label: "Practice", href: "practice.html" },
+    { label: "Coding", items: [["Python", "python.html"], ["Problems", "problems.html"], ["Microsoft", "microsoft.html"], ["Fresh 20", "fresh.html"], ["Patterns", "patterns.html"], ["Playground", "playground.html"]] },
+    { label: "Train", items: [["Dashboard", "dashboard.html"], ["Mock Interview", "mock.html"], ["Pattern Drills", "drills.html"], ["Big-O Quiz", "bigo.html"], ["Flashcards", "practice.html"]] },
+    { label: "Behavioral", href: "behavioral.html" },
   ];
   const SECTION = {
     "index.html": "Concepts", "": "Concepts", "toolbox.html": "Toolbox", "designs.html": "Designs",
-    "python.html": "Python", "problems.html": "Problems", "practice.html": "Practice", "deepdives.html": "Deep Dives", "topic.html": "Deep Dive", "playground.html": "Playground", "microsoft.html": "Microsoft", "fresh.html": "Fresh 20",
+    "python.html": "Python", "problems.html": "Problems", "practice.html": "Flashcards", "deepdives.html": "Deep Dives", "topic.html": "Deep Dive", "playground.html": "Playground", "microsoft.html": "Microsoft", "fresh.html": "Fresh 20",
+    "patterns.html": "Patterns", "dashboard.html": "Dashboard", "mock.html": "Mock Interview", "drills.html": "Pattern Drills", "bigo.html": "Big-O Quiz", "behavioral.html": "Behavioral",
   };
   function buildTopNav() {
     const brandText = document.querySelector(".brand .brand-text");
