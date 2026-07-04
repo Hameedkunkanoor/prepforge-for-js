@@ -978,6 +978,8 @@ pre.code-block code { font-family: var(--font-mono); background: none !important
 
 @media (max-width: 560px) { .drill-opts { grid-template-columns: 1fr; } }
 
+.bigo-opts .drill-opt { text-align: center; font-family: var(--font-mono); font-size: 15px; }
+
 /* ===================== Mock Interview ===================== */
 .hero.compact { padding-bottom: 12px; }
 .mock-setup { max-width: 640px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); padding: 26px; }
