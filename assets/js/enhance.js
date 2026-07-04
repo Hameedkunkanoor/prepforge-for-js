@@ -23,7 +23,7 @@
   const SECTION = {
     "index.html": "Concepts", "": "Concepts", "toolbox.html": "Toolbox", "designs.html": "Designs",
     "python.html": "Python", "problems.html": "Problems", "practice.html": "Flashcards", "deepdives.html": "Deep Dives", "topic.html": "Deep Dive", "playground.html": "Playground", "microsoft.html": "Microsoft", "fresh.html": "Fresh 20",
-    "patterns.html": "Patterns", "dashboard.html": "Dashboard", "mock.html": "Mock Interview", "drills.html": "Pattern Drills", "bigo.html": "Big-O Quiz", "behavioral.html": "Behavioral",
+    "patterns.html": "Patterns", "dashboard.html": "Dashboard", "mock.html": "Mock Interview", "drills.html": "Pattern Drills", "bigo.html": "Big-O Quiz", "behavioral.html": "Behavioral", "pattern.html": "Pattern",
   };
   function buildTopNav() {
     const brandText = document.querySelector(".brand .brand-text");

@@ -28,6 +28,7 @@
         <span class="pat-cx">${esc(p.complexity)}</span>
       </div>
       <p class="pat-tag">${esc(p.tagline)}</p>
+      <a class="pat-learn" href="pattern.html?id=${p.id}">📖 Learn ${esc(p.name)} end-to-end →</a>
       <div class="pat-grid">
         <div class="pat-block">
           <h4>Reach for it when you see</h4>
