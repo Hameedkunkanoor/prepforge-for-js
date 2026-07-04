@@ -49,11 +49,12 @@
     <section class="pg-right">
       <div class="pg-toolbar">
         <button id="run-btn" class="btn primary pg-run">▶ Run</button>
+        <button id="submit-btn" class="btn pg-submit" title="Run your code against all test cases">✔ Submit</button>
         <button id="reset-btn" class="btn ghost">↺ Reset</button>
         <select id="snip-select" class="pg-snip" title="Insert a snippet"><option value="">+ Insert…</option></select>
         <button id="intelli-btn" class="pg-toggle" title="Toggle IntelliSense">IntelliSense: On</button>
         <span id="pg-status" class="pg-status">Ready</span>
-        <span class="pg-hint">Ctrl/⌘ + Enter to run</span>
+        <span class="pg-hint">Ctrl/⌘ + Enter to run · Ctrl/⌘ + ⏎ Submit with Shift</span>
       </div>
       <div class="pg-editor"><textarea id="pg-code"></textarea></div>
       <div class="pg-console">
@@ -77,6 +78,7 @@
   <script src="assets/js/problems-data.js"></script>
   <script src="assets/js/ms-data.js"></script>
   <script src="assets/js/fresh-data.js"></script>
+  <script src="assets/js/progress.js"></script>
   <script src="assets/js/playground.js"></script>
   <script src="assets/js/enhance.js"></script>
 </body>

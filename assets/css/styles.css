@@ -793,6 +793,9 @@ pre.code-block code { font-family: var(--font-mono); background: none !important
 
 .pg-toolbar { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border-soft); background: var(--surface); }
 .pg-run { padding: 9px 20px; font-size: 14px; }
+.pg-submit { padding: 9px 18px; font-size: 14px; font-weight: 700; border-radius: 10px; cursor: pointer; border: 1px solid var(--c-storage, #34d399); color: #06231a; background: linear-gradient(135deg, #34d399, #10b981); }
+.pg-submit:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.pg-submit:disabled { opacity: .55; cursor: default; transform: none; }
 .pg-snip { appearance: none; -webkit-appearance: none; padding: 8px 12px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); font-family: inherit; font-size: 12.5px; cursor: pointer; }
 .pg-toggle { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text-dim); font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer; }
 .pg-toggle.on { border-color: var(--c-storage); color: var(--c-storage); background: color-mix(in srgb, var(--c-storage) 15%, transparent); }
@@ -808,6 +811,35 @@ pre.code-block code { font-family: var(--font-mono); background: none !important
 .pg-output { flex: 1; margin: 0; padding: 12px 16px; overflow-y: auto; font-family: var(--font-mono); font-size: 13px; line-height: 1.55; white-space: pre-wrap; color: var(--text); background: var(--code-bg); }
 .pg-output .err { color: #ff7b72; }
 .pg-output .muted { color: var(--text-dim); }
+
+/* status chip + star in the problem header */
+.pg-status-chip { font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.pg-status-chip.s-solved { color: #06231a; background: linear-gradient(135deg, #34d399, #10b981); }
+.pg-status-chip.s-review { color: #3a2600; background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+.pg-star { background: none; border: none; cursor: pointer; font-size: 20px; line-height: 1; color: var(--text-dim); margin-left: auto; }
+.pg-star.on { color: #f5c518; }
+
+/* auto-grade results */
+.grade-panel { font-family: var(--font-sans, inherit); }
+.grade-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-radius: 10px; margin-bottom: 10px; }
+.grade-head.gh-pass { background: color-mix(in srgb, #10b981 20%, transparent); border: 1px solid #10b981; }
+.grade-head.gh-fail { background: color-mix(in srgb, #ef4444 18%, transparent); border: 1px solid #ef4444; }
+.grade-verdict { font-weight: 800; font-size: 15px; }
+.gh-pass .grade-verdict { color: #34d399; }
+.gh-fail .grade-verdict { color: #f87171; }
+.grade-count { font-family: var(--font-mono); font-size: 12px; color: var(--text-dim); }
+.grade-row { display: flex; gap: 10px; padding: 9px 12px; border-radius: 9px; margin-bottom: 6px; border: 1px solid var(--border-soft); background: var(--surface); }
+.grade-row.gr-pass { border-color: color-mix(in srgb, #10b981 45%, var(--border)); }
+.grade-row.gr-fail { border-color: color-mix(in srgb, #ef4444 45%, var(--border)); }
+.gr-badge { font-weight: 800; }
+.gr-pass .gr-badge { color: #34d399; }
+.gr-fail .gr-badge { color: #f87171; }
+.gr-body { min-width: 0; flex: 1; }
+.gr-call { display: block; font-family: var(--font-mono); font-size: 12.5px; color: var(--text); word-break: break-all; }
+.gr-io { display: flex; gap: 8px; margin-top: 3px; font-family: var(--font-mono); font-size: 12px; }
+.gr-lab { color: var(--text-dim); min-width: 62px; }
+.gr-io code { color: var(--text-soft); word-break: break-all; }
+.grade-tip { font-size: 12.5px; color: var(--text-dim); margin: 8px 2px 0; }
 .pg-stdin-wrap { display: flex; flex-direction: column; border-top: 1px solid var(--border-soft); padding: 8px 16px; background: var(--surface); }
 .pg-stdin-wrap label { font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
 .pg-stdin { height: 48px; resize: vertical; background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: var(--font-mono); font-size: 12.5px; padding: 6px 8px; }

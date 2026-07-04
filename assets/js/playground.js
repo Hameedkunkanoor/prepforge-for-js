@@ -125,6 +125,8 @@ def to_list(n):
         <h2>${p.title}</h2>
         <span class="diff ${D[p.difficulty]}">${p.difficulty}</span>
         <span class="chip">${p.category}</span>
+        <span class="pg-status-chip" id="pg-status-chip"></span>
+        <button class="pg-star" id="pg-star" title="Star this problem">☆</button>
       </div>
       <div class="pg-tabs">${tabs.map((t, i) => `<button class="pg-tab ${i === 0 ? "active" : ""}" data-tab="${t[0]}">${t[1]}</button>`).join("")}</div>
 
@@ -147,6 +149,22 @@ def to_list(n):
         <ol class="trace-steps">${p.trace.map((t) => `<li>${esc(t)}</li>`).join("")}</ol>
       </div>`;
     if (window.Prism) window.Prism.highlightAll();
+    updateStatusChip();
+    const star = $("#pg-star");
+    if (star) star.addEventListener("click", () => { if (window.Progress) window.Progress.toggleStar(setId, current); updateStatusChip(); });
+  }
+
+  function updateStatusChip() {
+    if (!window.Progress) return;
+    const chip = $("#pg-status-chip");
+    const star = $("#pg-star");
+    const rec = window.Progress.get(setId, current);
+    if (chip) {
+      if (rec.review) { chip.textContent = "↻ Review"; chip.className = "pg-status-chip s-review"; }
+      else if (rec.solved) { chip.textContent = "✓ Solved"; chip.className = "pg-status-chip s-solved"; }
+      else { chip.textContent = ""; chip.className = "pg-status-chip"; }
+    }
+    if (star) { star.textContent = rec.star ? "★" : "☆"; star.classList.toggle("on", !!rec.star); }
   }
 
   /* ---------- Editor + IntelliSense ---------- */
@@ -169,6 +187,7 @@ def to_list(n):
       theme: "material-darker", matchBrackets: true, autoCloseBrackets: true,
       extraKeys: {
         "Ctrl-Enter": run, "Cmd-Enter": run,
+        "Shift-Ctrl-Enter": submit, "Shift-Cmd-Enter": submit,
         "Ctrl-Space": (cm) => cm.showHint({ hint: pyHint, completeSingle: false }),
         Tab: (cm) => cm.replaceSelection("    "),
       },
@@ -222,8 +241,94 @@ def to_list(n):
     }
   }
 
+  /* ---------- Auto-grade: run user code against every test case ---------- */
+  async function gradeOne(py, userCode, call) {
+    const parts = call.split(";").map((s) => s.trim()).filter(Boolean);
+    const last = parts.pop();
+    const pre = parts.length ? parts.join("\n") + "\n" : "";
+    const snippet = userCode + "\n" + pre + "print(" + last + ")\n";
+    let out = "";
+    py.setStdout({ batched: (s) => (out += s + "\n") });
+    py.setStderr({ batched: (s) => (out += s + "\n") });
+    try {
+      await py.runPythonAsync(snippet);
+      return { ok: true, out: out.trim() };
+    } catch (e) {
+      return { ok: false, out: String(e.message || e).trim() };
+    }
+  }
+
+  async function submit() {
+    const p = problem();
+    if (!p.tests || !p.tests.length) {
+      $("#pg-output").textContent = "";
+      appendOut("This problem has no auto-graded tests yet — use ▶ Run to try it.\n", "muted");
+      return;
+    }
+    const code = editor.getValue();
+    localStorage.setItem("pg-code-" + setId + "-" + current, code);
+    $("#pg-output").textContent = "";
+    $("#submit-btn").disabled = true;
+    $("#run-btn").disabled = true;
+    setStatus("Grading…");
+    const t0 = performance.now();
+    const results = [];
+    try {
+      const py = await loadPy();
+      // Reload helpers each submit in case a prior run redefined them.
+      py.runPython(HELPERS);
+      for (const [call, expected] of p.tests) {
+        const r = await gradeOne(py, code, call);
+        const pass = r.ok && normalize(r.out) === normalize(expected);
+        results.push({ call, expected, actual: r.out, pass });
+      }
+    } catch (e) {
+      appendOut(String(e.message || e), "err");
+      setStatus("Error");
+      $("#submit-btn").disabled = false;
+      $("#run-btn").disabled = false;
+      return;
+    }
+    const passed = results.filter((r) => r.pass).length;
+    const allPass = passed === results.length;
+    renderVerdict(results, passed, Math.round(performance.now() - t0));
+    if (window.Progress) window.Progress.markAttempt(setId, current, allPass);
+    updateStatusChip();
+    $("#submit-btn").disabled = false;
+    $("#run-btn").disabled = false;
+    setStatus(allPass ? "Accepted ✓" : `${passed}/${results.length} passed`);
+  }
+
+  function normalize(s) { return String(s).replace(/\s+/g, " ").trim(); }
+
+  function renderVerdict(results, passed, ms) {
+    const all = passed === results.length;
+    const rows = results.map((r, i) => `
+      <div class="grade-row ${r.pass ? "gr-pass" : "gr-fail"}">
+        <span class="gr-badge">${r.pass ? "✓" : "✗"}</span>
+        <div class="gr-body">
+          <code class="gr-call">${esc(r.call)}</code>
+          <div class="gr-io"><span class="gr-lab">expected</span><code>${esc(r.expected)}</code></div>
+          ${r.pass ? "" : `<div class="gr-io"><span class="gr-lab">got</span><code>${esc(r.actual || "(no output)")}</code></div>`}
+        </div>
+      </div>`).join("");
+    const out = $("#pg-output");
+    out.innerHTML = `
+      <div class="grade-panel">
+        <div class="grade-head ${all ? "gh-pass" : "gh-fail"}">
+          <span class="grade-verdict">${all ? "✓ Accepted" : "✗ Wrong Answer"}</span>
+          <span class="grade-count">${passed}/${results.length} tests · ${ms} ms</span>
+        </div>
+        ${rows}
+        ${all ? `<p class="grade-tip">Nice — marked solved. It'll resurface for spaced-repetition review.</p>`
+              : `<p class="grade-tip">Open the <b>Hints</b> tab, fix it, and Submit again.</p>`}
+      </div>`;
+    out.scrollTop = 0;
+  }
+
   function setupControls() {
     $("#run-btn").addEventListener("click", run);
+    $("#submit-btn").addEventListener("click", submit);
     $("#reset-btn").addEventListener("click", () => { editor.setValue(starter(problem())); localStorage.removeItem("pg-code-" + setId + "-" + current); });
     $("#clear-out").addEventListener("click", () => { $("#pg-output").textContent = ""; });
     $("#intelli-btn").addEventListener("click", () => { intelliOn = !intelliOn; localStorage.setItem("pg-intelli", intelliOn ? "on" : "off"); updateIntelliBtn(); editor.focus(); });
