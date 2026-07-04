@@ -1045,6 +1045,16 @@ pre.code-block code { font-family: var(--font-mono); background: none !important
 .mb-btn.danger { color: #f87171; border-color: color-mix(in srgb, #ef4444 45%, var(--border)); }
 .mock-frame { flex: 1; width: 100%; border: 0; background: var(--bg); }
 
+/* When a mock is running, give the editor the whole screen */
+body.mock-active .hero { display: none; }
+body.mock-active .mock-content { padding: 8px 10px 10px; max-width: none; }
+body.mock-active .mock-run { height: calc(100vh - 82px); min-height: 0; }
+/* Inside the mock iframe, hide the playground's own topbar to reclaim space */
+body.pg-embed .topbar { display: none; }
+body.pg-embed .pg-layout { height: 100vh; }
+body.pg-embed .pg-editor { flex: 1 1 74%; }
+body.pg-embed .pg-console { flex: 1 1 26%; }
+
 .mock-timesup { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.6); z-index: 10; }
 .mock-run { position: relative; }
 .mt-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 26px; text-align: center; max-width: 380px; }

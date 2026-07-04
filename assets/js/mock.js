@@ -25,6 +25,7 @@
 
   function renderSetup() {
     clearInterval(timer);
+    document.body.classList.remove("mock-active");
     $("#mock-root").innerHTML = `
       <div class="mock-setup">
         <h2>Set up your mock</h2>
@@ -92,6 +93,7 @@
     const { set, p } = items[i];
     session.remaining = mins * 60;
     session.paused = false;
+    document.body.classList.add("mock-active");
     $("#mock-root").innerHTML = `
       <div class="mock-run">
         <div class="mock-bar">
@@ -103,7 +105,7 @@
           <button class="mb-btn" id="mb-skip">Skip / Next</button>
           <button class="mb-btn danger" id="mb-end">End</button>
         </div>
-        <iframe class="mock-frame" id="mock-frame" src="playground.html?set=${set}&id=${p.id}" title="Coding editor"></iframe>
+        <iframe class="mock-frame" id="mock-frame" src="playground.html?set=${set}&id=${p.id}&mock=1" title="Coding editor"></iframe>
       </div>`;
     $("#mb-pause").addEventListener("click", togglePause);
     $("#mb-solved").addEventListener("click", () => nextQuestion(true));
@@ -155,6 +157,7 @@
 
   function finish() {
     clearInterval(timer);
+    document.body.classList.remove("mock-active");
     // capture the last in-progress question if not recorded
     if (session && session.results.length < session.i + 1 && session.i < session.items.length) {
       session.results.push({ item: session.items[session.i], solved: false });

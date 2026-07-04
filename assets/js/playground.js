@@ -360,6 +360,7 @@ def to_list(n):
 
   function init() {
     if (!PROBS.length) { $("#pg-desc").textContent = "No problems loaded."; return; }
+    if (params.get("mock")) document.body.classList.add("pg-embed");
     buildCollections();
     buildPicker();
     initEditor();
