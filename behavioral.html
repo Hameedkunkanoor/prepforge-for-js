@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aurora">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Microsoft behavioral interview prep: values, the STAR method, a question bank, and a STAR answer builder." />
+  <title>Behavioral · PrepForge for JS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">◈</span><span class="brand-text"><strong>PrepForge</strong><em>for JS</em></span></a>
+    <nav class="page-nav" aria-label="Pages"></nav>
+    <div style="flex:1"></div>
+    <div class="topbar-controls">
+      <div class="select-wrap" title="Color theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 000 18c1.7 0 2-1.3 1.2-2.2-.8-1-.2-2.3 1-2.3H17a4 4 0 004-4c0-5-4-9.5-9-9.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        <select id="theme-select" aria-label="Color theme"></select>
+      </div>
+      <button id="mode-toggle" class="icon-btn pill" aria-label="Toggle light/dark"><span class="mode-ico">🌙</span></button>
+    </div>
+  </header>
+
+  <main id="top" class="content">
+    <section class="hero">
+      <span class="eyebrow">Beyond the code</span>
+      <h1 class="hero-title">Behavioral &amp; STAR prep</h1>
+      <p class="hero-sub">Strong coders lose Microsoft offers on the behavioral round. It's usually its own interview (often the "As Appropriate" / hiring-manager loop). Come with 6–8 crisp stories you can flex to any question.</p>
+    </section>
+
+    <section class="bh-section">
+      <h2 class="bh-h2">What Microsoft looks for</h2>
+      <div id="bh-values" class="bh-values"></div>
+    </section>
+
+    <section class="bh-section">
+      <h2 class="bh-h2">The STAR method</h2>
+      <p class="bh-lead">Structure every answer as Situation → Task → Action → Result. Spend most of your time on <b>Action</b>, and always speak as "I".</p>
+      <div id="bh-star" class="bh-star"></div>
+    </section>
+
+    <section class="bh-section">
+      <h2 class="bh-h2">Build a STAR answer</h2>
+      <p class="bh-lead">Draft and save your stories right here — they're kept in your browser so you can refine them all week.</p>
+      <div id="bh-builder" class="bh-builder"></div>
+    </section>
+
+    <section class="bh-section">
+      <h2 class="bh-h2">Question bank</h2>
+      <p class="bh-lead">Click any question to load it into the builder above.</p>
+      <div id="bh-bank" class="bh-bank"></div>
+    </section>
+  </main>
+
+  <footer class="site-foot"><p class="muted">PrepForge for JS</p></footer>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/shell.js"></script>
+  <script src="assets/js/behavioral.js"></script>
+  <script src="assets/js/enhance.js"></script>
+</body>
+</html>
