@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aurora">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Understand Lowest Common Ancestor visually: pick two nodes and watch the algorithm walk a binary search tree live." />
+  <title>Lowest Common Ancestor · PrepForge for JS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+</head>
+<body>
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">◈</span><span class="brand-text"><strong>PrepForge</strong><em>for JS</em></span></a>
+    <nav class="page-nav" aria-label="Pages"></nav>
+    <div style="flex:1"></div>
+    <div class="topbar-controls">
+      <div class="select-wrap" title="Color theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 000 18c1.7 0 2-1.3 1.2-2.2-.8-1-.2-2.3 1-2.3H17a4 4 0 004-4c0-5-4-9.5-9-9.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        <select id="theme-select" aria-label="Color theme"></select>
+      </div>
+      <button id="mode-toggle" class="icon-btn pill" aria-label="Toggle light/dark"><span class="mode-ico">🌙</span></button>
+    </div>
+  </header>
+
+  <main id="top" class="content lca-page">
+    <section class="hero">
+      <span class="eyebrow">Trees · visual explainer</span>
+      <h1 class="hero-title">Lowest Common Ancestor, live</h1>
+      <p class="hero-sub">The Lowest Common Ancestor (LCA) of two nodes is the <b>deepest</b> node that has both of them as descendants (a node can be its own ancestor). Pick two nodes below and watch the algorithm find it step by step.</p>
+    </section>
+
+    <div id="lca-app"></div>
+  </main>
+
+  <footer class="site-foot"><p class="muted">PrepForge for JS</p></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-clike.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/shell.js"></script>
+  <script src="assets/js/lca.js"></script>
+  <script src="assets/js/enhance.js"></script>
+</body>
+</html>

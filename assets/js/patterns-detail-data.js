@@ -796,6 +796,7 @@ return order if len(order) == n else []   # [] means a cycle`,
   "tree-dfs": {
     name: "Tree DFS", color: "var(--c-interview)", complexity: "Time O(n) · Space O(h)",
     tagline: "Recurse into children and combine their results on the way back up.",
+    explainer: { href: "lca.html", label: "🎬 Interactive: Lowest Common Ancestor, live" },
     recognize: {
       triggers: [
         "\"Height / depth / diameter\", \"is it valid / balanced / symmetric\"",

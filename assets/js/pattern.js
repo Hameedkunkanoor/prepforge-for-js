@@ -129,6 +129,7 @@
         <h1>${esc(d.name)}</h1>
         <p class="pat-hero-tag">${esc(d.tagline)}</p>
         <span class="pat-hero-cx">${esc(d.complexity)}</span>
+        ${d.explainer ? `<a class="pat-explainer" href="${d.explainer.href}">${esc(d.explainer.label)} →</a>` : ""}
       </header>
 
       <section class="pat-sec">
