@@ -64,7 +64,17 @@
       </a>`;
     }).join("");
     const total = MODES.reduce((a, m) => a + m.problems.length, 0);
-    return `<h2 class="dp-h2">The 9 DP modes · ${total} worked problems</h2><div class="dp-mode-grid">${cards}</div>`;
+    return `<h2 class="dp-h2">The 9 DP modes · ${total} worked problems</h2><div class="dp-mode-grid">${cards}</div>
+      <div class="dp-cta">
+        <div>
+          <h3>Ready to practice?</h3>
+          <p>Every one of the ${total} problems is runnable and auto-graded in the Playground, and feeds your review queue. Or train recognition first.</p>
+        </div>
+        <div class="dp-cta-btns">
+          <a class="btn primary" href="dp-drills.html">🎯 DP recognition drill</a>
+          <a class="btn ghost" href="playground.html?set=dp&id=dp1">▶ Solve in Playground</a>
+        </div>
+      </div>`;
   }
 
   function init() {

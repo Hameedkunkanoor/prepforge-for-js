@@ -266,11 +266,14 @@ window.DP_MODES = [
       "Read the answer at the full amount.",
     ],
     viz: {
-      type: "array", caption: "Coin Change count (coins 1,2,5) — dp[a] = ways to make amount a.",
+      type: "array", caption: "Coin Change count (coins 1,2,5) — dp[a] = number of combinations making amount a.",
       cells: ["1", "1", "2", "2", "3", "4"],
       frames: [
+        { marks: { a: 0 }, note: "dp[0] = 1 — one way to make nothing (use no coins)." },
+        { marks: { a: 1 }, note: "amount 1: {1} → dp[1] = 1." },
         { marks: { a: 2 }, note: "amount 2: {1,1} and {2} → dp[2] = 2." },
-        { marks: { a: 5 }, note: "amount 5: {5}, {1,2,2}, {1,1,1,2}, {1×5} → dp[5] = 4." },
+        { marks: { a: 4 }, note: "amount 4: {1×4}, {2,2}, {2,1,1} → dp[4] = 3." },
+        { marks: { a: 5 }, note: "amount 5: {5}, {2,2,1}, {2,1,1,1}, {1×5} → dp[5] = 4." },
       ],
     },
     problems: [

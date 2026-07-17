@@ -16,6 +16,9 @@
   let id = byId[params.get("id")] ? params.get("id") : IDS[0];
   let arr = null;
 
+  // DP modes that map onto an existing Pattern reader page.
+  const RELATED = { linear: "dp-1d", grid: "dp-2d" };
+
   /* ---------- visuals (array stepper / grid / mermaid) ---------- */
   function vizHTML(v) {
     if (!v) return "";
@@ -75,6 +78,15 @@
   /* ---------- problem card ---------- */
   function problemCard(p, n, dpNum) {
     const link = `<a class="btn ghost sm" href="playground.html?set=dp&id=dp${dpNum}">▶ Solve &amp; auto-grade in Playground</a>`;
+    const extras = (window.DP_EXTRAS && window.DP_EXTRAS[dpNum]) || [];
+    const extrasHTML = extras.length ? `
+      <h4 class="dp-extra-h">Other ways to write it</h4>
+      ${extras.map((e) => `
+        <div class="dp-extra">
+          <div class="dp-extra-lab">${esc(e.label)}</div>
+          <p class="dp-extra-note">${e.note}</p>
+          ${e.code ? `<div class="code-wrap"><div class="code-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="code-lang">python</span><button class="copy-code" title="Copy code">copy</button></div><pre class="code-block"><code class="language-python">${esc(e.code)}</code></pre></div>` : ""}
+        </div>`).join("")}` : "";
     return `<article class="dp-prob">
       <div class="dp-prob-head">
         <span class="dp-prob-n">${n}</span>
@@ -99,6 +111,7 @@
         <div class="dp-walk"><span class="lab">Why it works</span><p>${p.walk}</p></div>
         <h4 class="dp-trace-h">Trace</h4>
         <ol class="trace-steps">${p.trace.map((t) => `<li>${esc(t)}</li>`).join("")}</ol>
+        ${extrasHTML}
         ${link}
       </details>
     </article>`;
@@ -135,10 +148,14 @@
       <section class="pat-sec">
         <h2>How to solve this class, step by step</h2>
         <ol class="pat-steps">${m.approach.map((s) => `<li>${s}</li>`).join("")}</ol>
+        ${RELATED[id] ? `<p class="dp-related">Related pattern page: <a href="pattern.html?id=${RELATED[id]}">open the ${esc(m.name)} pattern explainer →</a></p>` : ""}
       </section>
 
       <section class="pat-sec">
-        <h2>Worked problems</h2>
+        <div class="dp-prob-bar">
+          <h2>Worked problems</h2>
+          <button id="dp-toggle-all" class="btn ghost sm" type="button">Expand all</button>
+        </div>
         <p class="dp-try">Read the statement, try the <b>nudge</b>, plan your <i>state → transition → base → answer</i>, then reveal the solution.</p>
         ${m.problems.map((p, k) => problemCard(p, k + 1, offset + k + 1)).join("")}
       </section>
@@ -150,6 +167,15 @@
 
     if (m.viz && m.viz.type === "array") initArrayViz(m.viz);
     if (window.Prism) window.Prism.highlightAll();
+
+    const toggle = $("#dp-toggle-all");
+    if (toggle) toggle.addEventListener("click", () => {
+      const sols = Array.from(document.querySelectorAll(".dp-sol"));
+      const anyClosed = sols.some((d) => !d.open);
+      sols.forEach((d) => (d.open = anyClosed));
+      toggle.textContent = anyClosed ? "Collapse all" : "Expand all";
+      if (anyClosed && window.Prism) window.Prism.highlightAll();
+    });
   }
 
   function init() {

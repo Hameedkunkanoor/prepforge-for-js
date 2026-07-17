@@ -405,6 +405,7 @@ return res`,
   "dp-1d": {
     name: "Dynamic Programming (1D)", color: "var(--c-interview)", complexity: "Time O(n·transitions) · Space O(n) → O(1)",
     tagline: "Build the answer from smaller overlapping subproblems along a single axis.",
+    explainer: { href: "dp.html", label: "Go deeper: the full DP section (9 modes, 26 worked problems)" },
     recognize: {
       triggers: [
         "\"Number of ways\", \"min/max cost to reach\", \"can you…\"",
@@ -459,6 +460,7 @@ return dp[n]
   "dp-2d": {
     name: "Dynamic Programming (2D / grid)", color: "var(--c-interview)", complexity: "Time O(m·n) · Space O(m·n) → O(n)",
     tagline: "A table indexed by two dimensions — comparing two strings, walking a grid, or filling intervals.",
+    explainer: { href: "dp.html", label: "Go deeper: the full DP section (9 modes, 26 worked problems)" },
     recognize: {
       triggers: [
         "Two sequences compared (edit distance, LCS, regex)",
