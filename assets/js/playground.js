@@ -10,6 +10,7 @@
     blind: window.PROBLEMS || [],
     microsoft: window.MS_PROBLEMS || [],
     fresh: window.FRESH_PROBLEMS || [],
+    dp: window.DP_PROBLEMS || [],
   };
   const params = new URLSearchParams(location.search);
   let setId = SETS[params.get("set")] ? params.get("set") : "blind";

@@ -73,8 +73,8 @@
   }
 
   /* ---------- problem card ---------- */
-  function problemCard(p, n) {
-    const link = p.link ? `<a class="btn ghost sm" href="playground.html?set=${p.link.set}&id=${p.link.id}">▶ Solve in Playground</a>` : "";
+  function problemCard(p, n, dpNum) {
+    const link = `<a class="btn ghost sm" href="playground.html?set=dp&id=dp${dpNum}">▶ Solve &amp; auto-grade in Playground</a>`;
     return `<article class="dp-prob">
       <div class="dp-prob-head">
         <span class="dp-prob-n">${n}</span>
@@ -109,6 +109,9 @@
     document.title = m.name + " · DP · PrepForge";
     const i = IDS.indexOf(id);
     const prev = IDS[i - 1], next = IDS[i + 1];
+    // global problem offset so each card links to its runnable set=dp entry
+    let offset = 0;
+    for (let k = 0; k < i; k++) offset += byId[IDS[k]].problems.length;
 
     $("#dp-root").innerHTML = `
       <a class="pat-back" href="dp.html">← All DP modes</a>
@@ -137,7 +140,7 @@
       <section class="pat-sec">
         <h2>Worked problems</h2>
         <p class="dp-try">Read the statement, try the <b>nudge</b>, plan your <i>state → transition → base → answer</i>, then reveal the solution.</p>
-        ${m.problems.map((p, k) => problemCard(p, k + 1)).join("")}
+        ${m.problems.map((p, k) => problemCard(p, k + 1, offset + k + 1)).join("")}
       </section>
 
       <nav class="pat-nav">
